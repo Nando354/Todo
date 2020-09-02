@@ -1,0 +1,32 @@
+/* CSS files add styling rules to your content */
+
+body {
+    font-family: helvetica, arial, sans-serif;
+    margin: 2em;
+  }
+  
+  h1 {
+    font-style: italic;
+    color: #373fff;
+  }
+  .container {
+    background-color: green;
+    border: solid;
+    width: auto;
+    height: auto;
+  }
+  .container1 {
+    
+  }
+  .container2 {
+    
+  }
+  .container3 {
+    
+  }
+
+  button .removeList {
+    width: 25px;
+    height: 25px;
+  }
+  

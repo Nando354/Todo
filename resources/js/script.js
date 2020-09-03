@@ -4,22 +4,23 @@ const newList = document.getElementById('newList');
 const newListFormItem = document.getElementById('form')
 const listFormInp = document.getElementById('listAddButton')
 
+
+
+
+//---------------------------------
+
 let listArrs = [];
 let listObj = {};
 
 
 
 //-----------------Event Listeners
-// eventListeners();
 
-// function eventListeners(){
-//   //Form Submission
-//   document.querySelector('#form').addEventListener('submit', newListItem);
-// }
 
-  //Step 1. Submit the form for array of objects to be updated in js 
+
 newListFormItem.addEventListener('submit', e => { 
   e.preventDefault();
+  // console.log(liSpanClassNode)
   //gets value from text area in form
   const listFormTxt = document.getElementById('listFormTxt').value;
   //Get li element
@@ -40,11 +41,12 @@ newListFormItem.addEventListener('submit', e => {
   li.appendChild(removeBtn);
   //inner event function remove li item
   removeBtn.addEventListener('click', function(ev){
-    console.log(document.getElementsByClassName('removeList')[0]);
-    console.log(ev);
+    // console.log(document.getElementsByClassName('removeList')[0]);
+    // console.log(ev);
+    // console.log(document.getElementsByClassName('spanClass')[0])
     // document.getElementsByClassName('removeList')[0].parentNode.remove();
     ev.target.parentNode.remove();
-    console.log("hi")
+    
   });
   //ul append li with button to remove
   newList.appendChild(li)
@@ -69,16 +71,113 @@ newListFormItem.addEventListener('submit', e => {
         editLiText.contentEditable = false;
         //removes borderstyle to show released edit button
         editButton.style.borderStyle = 'none';
+        
+        
       }
     })
-  })  
-  
-  //from the focus if you hit enter key the list is no longer in edit mode.
-
-
 
   })
-// })
+
+  //Notes: Create todo details title from todo list then add the list fields
+
+  //Now i get the title but it stays Need to figure out how to reset it when it is edited but leave it clickable too, thinking maybe a new card pops up every time there is a change. So create new card.
+  //
+
+  //-----------List Details---
+  const liText = document.getElementsByClassName('spanClass')[0];
+
+  // liText.addEventListener('click', function(ev4){
+  //   //Note: make it click only once
+  //   //Create h2 title
+  //   let taskLiTitle = document.createElement('h2');
+  //   // //put list item as title in h2
+  //   taskLiTitle.innerText = document.getElementsByClassName('spanClass')[0].innerHTML;
+  //   document.getElementById('newTask').appendChild(taskLiTitle);
+  // })
+
+
+  
+  // set title of list on list Details 
+  liText.addEventListener('click', setTitle);
+
+  function setTitle(){
+    //Create h2 title
+    let taskLiTitle = document.createElement('h2');
+    // //put list item as title in h2
+    taskLiTitle.innerText = document.getElementsByClassName('spanClass')[0].innerHTML;
+    document.getElementById('newTask').appendChild(taskLiTitle);
+  }
+
+  setTimeout(function(){
+    liText.removeEventListener('click', setTitle)
+  }, 2000)
+
+  
+
+
+ 
+
+  
+
+  
+  
+    // getElementById('newTask').appendChild(li);
+    // li.appendChild(liSpan);
+    // liSpan.innerText = taskFormTxt;
+    // //add classname to span
+    // liSpan.classList = 'taskClass'
+    // //clear text area
+    // const clearTaskTxt = document.getElementById('taskFormTxt')
+    // clearTaskTxt.value="";
+    // //Create the remove button
+    // const removeTaskBtn = document.createElement('button');
+    // removeTaskBtn.classList = 'removeTaskList';
+    // removeTaskBtn.innerText = 'x';
+    // li.appendChild(removeTaskBtn);
+  })
+
+
+  // function getNodes() {
+    // var ch = newList.getElementsByClassName(liSpanClass).childNodes
+    // console.log(liText)
+  // }
+  // getNodes()
+
+
+
+
+  // })
+
+
+
+  //Note: Add details to the todo
+  // 1. grab the list span class and make it a clickable event area that will allow me to input details in the todo details section.
+
+  // eventListeners();
+
+  // function eventListeners(){
+
+  //   document.querySelector('#newList').addEventListener('click', listDetail);
+  // }
+
+  // function listDetail(ev4) {
+  //   console.log("hello")
+  // }
+
+// function getNodes() {
+//   var ch = newList.getElementsByClassName(liSpanClass).childNodes
+//   console.log(document.getElementsByClassName('spanClass')[0])
+// }
+
+
+
+
+
+  // liSpanClass.addEventListener('click', ev4 => {
+  //   ev4.preventDefault();
+  //   console.log(ev4.target)
+  //   // console.log(document.getElementById('newTask'));
+  // })
 
 
 //Difference btw innerText, innerHTML
@@ -96,56 +195,12 @@ newListFormItem.addEventListener('submit', e => {
 
 //-----------------Functions
 
-//Step 2. Renders the todo list li's in js for ul to show in dom for todo list
-function render(){
-  //calls function to prevent list items from duplicating
-  clearElement(newList)
-  listArrs.forEach(listArr => {
-    //create li element
-    const li = document.createElement('li')
-    //assigns id to li
-    li.dataset.listId = listArr.id
-    //adds class to li
-    li.classList.add("liName")
-    //adds object name property to li
-    li.innerText = listArr.name
-    //attaches li to id newlist
-    newList.appendChild(li)
 
-  })
-}
-
-//remove duplicate items when forEach  used
-function clearElement(element){
-  while (element.firstChild) {
-    element.removeChild(element.firstChild)
-  }
-}
-
-
-render();
-
-
-
-function createLi(name){
-  return { id: Date.now().toString(), name: name, tasks: [] }
-}
 
 
   
 
-  // function newListItem(e) {
-  //   e.preventDefault();
-  
-  //   //Read text area value entered
-  //   const listFormTxt = document.getElementById('listFormTxt').value;
-  //   //Place in new list as an li
-  //   const li = document.createElement('li');
-  //   li.textContent = listFormTxt;
-  //   const newList = document.getElementById("newList").appendChild(li);
-  //   //Remove  text from form once button is clicked
-  //   const clearTxt = document.getElementById("listFormTxt").value =''; 
-  // };
+
 
 
  

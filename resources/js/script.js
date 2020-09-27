@@ -1,8 +1,8 @@
 
 //------------------Variables
 const newList = document.getElementById('newList');
-const newListFormItem = document.getElementById('form')
-const listFormInp = document.getElementById('listAddButton')
+const newListFormItem = document.getElementById('todoForm')
+// const listFormInp = document.getElementById('listAddButton')
 
 
 
@@ -69,6 +69,7 @@ newListFormItem.addEventListener('submit', e => {
         editLiText.contentEditable = false;
         //removes borderstyle to show released edit button
         editButton.style.borderStyle = 'none';
+  
       }
     })
 
@@ -96,7 +97,6 @@ newListFormItem.addEventListener('submit', e => {
   //Inner function -- SET UP TASK CARD
   liSpan.addEventListener('click', function(ev4){
 
-
     //Create container div
     const taskCont = document.createElement('div');
     taskCont.classList.add('container', 'container4');
@@ -111,49 +111,136 @@ newListFormItem.addEventListener('submit', e => {
     //TASK FORM DIV
     //Create task form Div
     const taskFormDiv = document.createElement('div');
-    taskFormDiv.classList.add = 'taskForm';
+    taskFormDiv.classList.add = 'taskFormDiv';
     taskCont.appendChild(taskFormDiv);
 
     //-----TASK FORM
     //Create task form
     const taskForm = document.createElement('form');
     taskForm.setAttribute('action', '#');
-    taskForm.classList.add = 'form';
+    taskForm.classList.add = 'taskForm';
     taskFormDiv.appendChild(taskForm);
    
-    //Create textarea
+    //Create task textarea
     let taskText = document.createElement('TEXTAREA');
     taskText.id = 'taskFormTxt';
     taskForm.appendChild(taskText);
+    
 
-    //Create input button
+    //Create task input button
     const taskButton = document.createElement('button');
     taskButton.id = 'taskAddButton';
     taskButton.setAttribute('type', 'submit')
     taskButton.setAttribute('value', '+')
     taskButton.innerText = '+';
     taskForm.appendChild(taskButton);
-    //End TASK FORM DIVDFD
-
+    
     //Create tasks div
     const taskDiv = document.createElement('div')
     taskDiv.classList.add = 'tasks';
     taskCont.appendChild(taskDiv);
-
-    // Create ul
+    
+    // Create task ul
     taskUl = document.createElement('ul');
-    taskUl.id = 'newTask';
+    taskUl.classList.add = 'newTask';
     taskDiv.appendChild(taskUl);
-
-    //Create li
-    taskLi = document.createElement('li');
-    taskUl.appendChild(taskLi);
-
+    
     document.body.appendChild(taskCont)
+    //End TASK FORM DIVDFD
 
-  })    
+    
+    //----Button to add task details entered into taskform
+    taskButton.addEventListener('click', ev5 => {
+
+     
+      ev5.preventDefault();
+      //gets value from text area in taskform
+      let taskFormTxt = document.getElementById('taskFormTxt').value;
+      
+      
+
+      //Create task li
+      taskLi = document.createElement('li');
+      //Create task Span
+      taskLiSpan = document.createElement('SPAN');
+      //add classname to task span
+      taskLiSpan.classList = 'taskSpanClass'
+      //append span to lis
+      taskLi.appendChild(taskLiSpan);
+      //add form txt to span
+      taskLiSpan.innerText = taskFormTxt;
+      //append li to ul
+      taskUl.appendChild(taskLi);
+      
+      //clear text area
+      const clearTaskTxt = document.getElementById('taskFormTxt');
+      clearTaskTxt.value="";
+      //Create the remove button
+      const removeTaskBtn = document.createElement('button');
+      removeTaskBtn.classList = 'removeList';
+      removeTaskBtn.innerText = 'x';
+      taskLi.appendChild(removeTaskBtn);
+
+      //innerText of task span
+      // taskLiSpan.innerText = taskFormTxt;
+    
+      
+     
+      
+     
+      
+//---------------Copy----
+      
+
+      //--inner event function -- remove li item with x button
+        removeTaskBtn.addEventListener('click', function(ev5){
+          ev5.target.parentNode.remove();
+        });
+//---
+      //ul append li with button to remove
+      // newList.appendChild(li)
+      taskUl.appendChild(taskLi);
+      
+//---
+
+      //add edit button, button to be pressed when editing
+      const editTaskButton = document.createElement('button');
+      editTaskButton.classList = 'editList';
+      editTaskButton.innerText = 'Edit';
+      //add edit button to li
+      taskLi.appendChild(editTaskButton);
+
+      //add checkbox
+      const checkBox = document.createElement('input');
+      checkBox.classList ='complete';
+      checkBox.setAttribute('type', 'checkbox');
+      taskLi.appendChild(checkBox);
+
+
+      //Inner event function -- text entered in span within list to be editable
+      editTaskButton.addEventListener('click', function(ev6){
+        let  editTaskLiText = ev6.target.parentNode.firstChild
+        editTaskLiText.contentEditable = true;
+        //edit text is set to focus so you can see the box glow when in edit mode
+        editTaskLiText.focus();
+        editTaskButton.style.borderStyle = 'inset';
+        //Inner of Inner event function -- able to edit then press enter to no longer focus off of enter keydown
+        editTaskLiText.addEventListener ("keydown", function(ev7){
+          if(ev7.keyCode === 13) {
+            ev7.preventDefault();
+            //removes focus on list item
+            editTaskLiText.contentEditable = false;
+            //removes borderstyle to show released edit button
+            editTaskButton.style.borderStyle = 'none'; 
+          }
+        })
+// --------------Copy end----------
+      })
+
+    })    
+  })
 })
-  
+ 
 
 
 

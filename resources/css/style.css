@@ -14,6 +14,7 @@ body {
     border: solid;
     width: auto;
     height: auto;
+    display: flexbox;
   }
   .container1 {
     
@@ -24,9 +25,13 @@ body {
   .container3 {
     
   }
+  .container4 {
+    
+  }
 
-  button .removeList {
+  button .removeList, #listAddButton, #taskAddButton{
     width: 25px;
     height: 25px;
+    color: black;
   }
   

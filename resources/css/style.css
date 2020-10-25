@@ -1,37 +1,36 @@
 /* CSS files add styling rules to your content */
 
 body {
-    font-family: helvetica, arial, sans-serif;
-    margin: 2em;
-  }
-  
-  h1 {
-    font-style: italic;
-    color: #373fff;
-  }
-  .container {
-    background-color: green;
-    border: solid;
-    width: auto;
-    height: auto;
-    display: flexbox;
-  }
-  .container1 {
-    
-  }
-  .container2 {
-    
-  }
-  .container3 {
-    
-  }
-  .container4 {
-    
-  }
+  font-family: helvetica, arial, sans-serif;
+  margin: 2em;
+}
 
-  button .removeList, #listAddButton, #taskAddButton{
-    width: 25px;
-    height: 25px;
-    color: black;
-  }
+h1 {
+  font-style: italic;
+  color: #373fff;
+}
+.container, #taskContainer {
+  background-color: green;
+  border: solid;
+  width: auto;
+  height: auto;
+  display: flexbox;
+}
+.container1 {
   
+}
+.container2 {
+  
+}
+.container3 {
+  
+}
+.container4 {
+  
+}
+
+button .removeList, #listAddButton, #taskAddButton{
+  width: 25px;
+  height: 25px;
+  color: black;
+}

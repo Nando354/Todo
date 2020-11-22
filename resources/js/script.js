@@ -1,10 +1,25 @@
 
+
 //------------------Variables
 const newList = document.getElementById('newList');
 const newListFormItem = document.getElementById('todoForm')
-// const listFormInp = document.getElementById('listAddButton')
 
+//===================Date==============
+shortMonths = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
+let d = new Date();
+let dStr = d.toISOString(); //format: 2020-09-11T16:10:56.611Z
+let dStrShort = d.toISOString().substring(0, 10); // format: 2020-09-11
 
+function newDateForm(today){
+  today = d;
+  let dStrShort = d.toISOString().substring(0, 10); // format: 2020-09-11
+  let mnth = shortMonths[dStrShort.substring(5, 7)-1];
+  let dia = dStrShort.substring(8, 10)
+  let ano = dStrShort.substring(0, 4);
+  return mnth+" "+dia+", "+ano
+}
+let constantDate = document.getElementById('time');
+let showDate = constantDate.innerHTML = newDateForm();
 
 //-----------------Event Listeners
 
@@ -32,29 +47,43 @@ newListFormItem.addEventListener('submit', e => {
   clearTxt.value="";
   //Create the remove button
   const removeBtn = document.createElement('button');
-  removeBtn.classList = 'removeList';
+  removeBtn.id = 'removeList';
   removeBtn.innerText = 'x';
   li.appendChild(removeBtn);
+    //==============================================================
+    //======================Delete button=============================
+    //==============================================================
 
   //--inner event function -- remove li item with x button
-  removeBtn.addEventListener('click', ev => {
-    ev.target.parentNode.remove();
+  removeBtn.addEventListener('click', e => {
+    //removes list item
+    console.log(e.target);
+    e.target.parentNode.remove();
+    console.log('remove button clicked');
   });
-
+  
   //ul append li with button to remove
   newList.appendChild(li)
   //add edit button, button to be pressed when editing
   const editButton = document.createElement('button');
-  editButton.classList = 'editList';
+  editButton.id = 'editList';
   editButton.innerText = 'Edit';
   //add edit button to li
   li.appendChild(editButton);
 
   //Inner event function -- Allows text entered in span within list to be editable -- Event of pressing edit button causes list item to have a focus and border highlight when editable
-  
-  editButton.addEventListener('click', ev2 => {
-    let  editLiText = ev2.target.parentNode.firstChild;
-    editLiText.contentEditable = true;
+
+  //==============================================================
+  //==============================================================
+  //====================Edit Button===============================
+  //==============================================================
+  // editButton.addEventListener('click', deBolden, false);
+  editButton.addEventListener('click', e => {
+    // hideCont();
+    console.log(e.target);
+    let  editLiText = e.target.parentNode.firstChild;
+    console.log(editLiText); //span
+    editLiText.contentEditable = 'true';
     //edit text is set to focus so you can see the box glow when in edit mode
     editLiText.focus();
     //===================================================================
@@ -62,71 +91,79 @@ newListFormItem.addEventListener('submit', e => {
     //===================================================================
     //make button look pressed
     editButton.style.borderStyle = 'inset';
-
-    //--------------------------------------
-    //Note: create way of preventing clicking in list text from doing anything during content editable
-    //--------------------------------------
-
+    console.log(editButton.style.borderStyle)
     //Inner of Inner event function -- Event of pressing enter within editable text causes content to no longer be editable and for focus to be off
-    editLiText.addEventListener ("keydown", ev3 => {
-      if(ev3.keyCode === 13) {
+    editLiText.addEventListener ("keydown", e => {
+      if(e.keyCode === 13) {
         //removes focus on list item
-        editLiText.contentEditable = false;
+        editLiText.contentEditable = 'false';
         //removes borderstyle to show released edit button
         editButton.style.borderStyle = 'none';
       }
     })
   })
 })
- 
-  
 
-    //===============================Bold==============================
-  
+    //===============================Toggler==============================
 
-    //todo list items are bold so you know which one is selected also created a pop out display container with the tasklist checkboxes
-    function bolden(e){
+    // //todo list items are bold so you know which one is selected also created a pop out display container with the tasklist checkboxes
+    function toggler(e){
       let listItems = newList.querySelectorAll('span');
       var displayDiv = document.getElementById('display');
+      let removeBtn = document.getElementById('removeList')
+      let editBtn = document.getElementById('editBtn');
       let emptyDiv = displayDiv.innerHTML = '';
       
-      //Allows only 1 bold item at a time bc it iterates through each list item to check if any one is bold so it can unbold all and change className back to spanClass
-      listItems.forEach(function(listItem){
-        //if any are bold even one clicked previously make them all normal
-        if(listItem.style.fontWeight = 'bold'){
-          listItems.forEach(function(listItem){
-            listItem.style.fontWeight = 'normal'
-            listItem.className = 'spanClass'
-          })
-        }
-      })
-      // If statement - turns anything selected to be bold and changes class name to 'Selected and the display id visible but empties it then adds the taskCard details
-      if(e.target.style.fontWeight === 'normal'|| !e.target.style.fontWeight) {
-        e.target.style.fontWeight = 'bold';
-        e.target.className = 'selected';
-        displayDiv.style.display = "block";
-        emptyDiv
-        taskCard();
-      //If it is already bold turns the fontweight normal keeps diplay id visible also empties it
-      }else if (e.target.style.fontWeight === 'bold') {
-        e.target.style.fontWeight = 'normal';
-        // e.target.className = 'preSelected';
-        displayDiv.style.display = "block";
-        // let divCon = document.getElementById('display');
-        emptyDiv
+      //For span to show container when clicked and show show container after edit mode not during
+      if(e.target.nodeName === 'SPAN' && e.target.contentEditable === 'inherit'|| e.target.contentEditable === 'false') {
+          for(let list of listItems){
+            if(list.className = 'spanClass') {
+              console.log('there is a selected item already');
+            }
+          }
+          e.target.className = 'selected'
+        console.log('span was clicked by itself and container should show, class now selected');
+        toggleOn();
+      } 
+      //For Edit button to not cause a drop down on click of span
+      if(e.target.nodeName === 'SPAN' && e.target.contentEditable === 'true'){
+          for(let list of listItems) {
+          list.className = 'spanClass'
+          }
+          console.log(('span was clicked on edit mode do not show Cont'));
+          toggleOff();
       }
-
+      //For edit button to not coause a drop down
+      if(e.target.style.borderStyle === 'inset') {
+        for(let list of listItems) {
+          list.className = 'spanClass'
+        }
+        console.log('edit button was clicked do not show Cont');
+        toggleOff();
+        }
     }
-    newList.addEventListener('click', bolden, false)
-
-   
-
-
+    newList.addEventListener('click', toggler, false)
 
     //==============================================================
-    //End TASK FORM DIVDFD
+    //======================Toggle Functions========================================
+    //==============================================================
+    let displayDiv = document.getElementById('display');
 
-  //======================Task List Details================================
+    function toggleOn() {
+      taskCard(); 
+      displayDiv.style.display = 'block';
+      console.log('toggle on');
+    }
+
+    function toggleOff() {
+      displayDiv.style.display = 'none';
+      console.log('toggle off');
+    }
+
+//==============================================================
+//======================TaskCard Function=======================
+//==============================================================
+
   function taskCard(){
 
     let dropDownCont = document.getElementById('display');
@@ -134,7 +171,9 @@ newListFormItem.addEventListener('submit', e => {
     //Create container div
     const taskCont = document.createElement('div');
   
-    taskCont.id='taskContainer'
+    taskCont.id='taskContainer';
+
+    taskCont.className='container';
     
     //---------------Task Title from todo list item--------------
     let taskLiTitle = document.createElement('h2');
@@ -143,17 +182,14 @@ newListFormItem.addEventListener('submit', e => {
     let spans = newList.querySelectorAll("span");
 
     spans.forEach(function(span){
-      // console.log(span.className);
-      if(span.className == "selected"){
+      if(span.className === "selected"){
         let spanTextNeeded = span.innerText;
         taskLiTitle.innerText = spanTextNeeded;
         taskCont.appendChild(taskLiTitle);
-      } else{
-        
-      }
+      } 
     });
 
-    //==========================================
+    //=======Create Task Area========//
 
     taskCont.appendChild(taskLiTitle);
 
@@ -199,12 +235,9 @@ newListFormItem.addEventListener('submit', e => {
     
     //----Button to add task details entered into taskform
     taskButton.addEventListener('click', ev5 => {
-
-     
       ev5.preventDefault();
       //gets value from text area in taskform
       let taskFormTxt = document.getElementById('taskFormTxt').value;
-      
       //Create task li
       taskLi = document.createElement('li');
       //Create task Span
@@ -215,9 +248,9 @@ newListFormItem.addEventListener('submit', e => {
       taskLi.appendChild(taskLiSpan);
       //add form txt to span
       taskLiSpan.innerText = taskFormTxt;
+      console.log(taskFormTxt)
       //append li to ul
       taskUl.appendChild(taskLi);
-      
       //clear text area
       const clearTaskTxt = document.getElementById('taskFormTxt');
       clearTaskTxt.value="";
@@ -227,46 +260,58 @@ newListFormItem.addEventListener('submit', e => {
       removeTaskBtn.innerText = 'x';
       taskLi.appendChild(removeTaskBtn);   
       
-      //--inner event function -- remove li item with x button
+        //--inner event function -- remove li item with x button
         removeTaskBtn.addEventListener('click', ev5 => {
           ev5.target.parentNode.remove();
         });
 
       //ul append li 
       taskUl.appendChild(taskLi);
-
       //add edit button, button to be pressed when editing
       const editTaskButton = document.createElement('button');
       editTaskButton.classList = 'editList';
       editTaskButton.innerText = 'Edit';
       //add edit button to li
       taskLi.appendChild(editTaskButton);
-
       //add checkbox
       const checkBox = document.createElement('input');
       checkBox.classList ='complete';
       checkBox.setAttribute('type', 'checkbox');
       taskLi.appendChild(checkBox);
 
-      //Inner event function -- text entered in span within list to be editable
-      editTaskButton.addEventListener('click', ev6 => {
-        let  editTaskLiText = ev6.target.parentNode.firstChild
-        editTaskLiText.contentEditable = true;
-        //edit text is set to focus so you can see the box glow when in edit mode
-        editTaskLiText.focus();
-        editTaskButton.style.borderStyle = 'inset';
-        //Inner of Inner event function -- able to edit then press enter to no longer focus off of enter keydown
-        editTaskLiText.addEventListener ("keydown", ev7 => {
-          if(ev7.keyCode === 13) {
-            ev7.preventDefault();
-            //removes focus on list item
-            editTaskLiText.contentEditable = false;
-            //removes borderstyle to show released edit button
-            editTaskButton.style.borderStyle = 'none'; 
-          }
+        //Inner event function -- text entered in span within list to be editable
+        editTaskButton.addEventListener('click', ev6 => {
+          let  editTaskLiText = ev6.target.parentNode.firstChild
+          editTaskLiText.contentEditable = true;
+          //edit text is set to focus so you can see the box glow when in edit mode
+          editTaskLiText.focus();
+          editTaskButton.style.borderStyle = 'inset';
+
+          //Inner of Inner event function -- able to edit then press enter to no longer focus off of enter keydown
+          editTaskLiText.addEventListener ("keydown", ev7 => {
+            if(ev7.keyCode === 13) {
+              ev7.preventDefault();
+              //removes focus on list item
+              editTaskLiText.contentEditable = false;
+              //removes borderstyle to show released edit button
+              editTaskButton.style.borderStyle = 'none'; 
+              }
+            })
         })
-      })
+
+          //Inner of Inner event function for checkbox
+          checkBox.addEventListener('click', ev7 => {
+            let editTaskOnCheck = ev7.target.parentNode.firstChild;
+            if(checkBox.checked === true) {
+            console.log(editTaskOnCheck);
+            editTaskOnCheck.style.textDecoration = 'line-through';
+            } else {
+              editTaskOnCheck.style.textDecoration = 'none'
+            }
+          })
     })
   }
 
+  //Note 11-17
+  //Make font bigger and text areas etc
  

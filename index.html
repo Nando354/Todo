@@ -9,19 +9,22 @@
     
     <!-- import the webpage's stylesheet -->
     <link rel="stylesheet" type="text/css" href="resources/css/style.css">
-    
-
+    <link href="https://fonts.googleapis.com/css?family=Quicksand:300,500" rel="stylesheet">
   </head>  
   <body>
+    <div class="container container-time" >
+      <h1 id='time'> </h1>
+    </div>
     <div class="container container1">
-    <h1>Todo or not todo that is the question</h1>
+      <img class="mtnImg" src = 'resources/img/mountains.jpg'>
+      <h1>Todo or Not to Do that is the Question</h1>
     </div>
 
     <div class="container container2">
       <div class="listForm">
-        <h1>Add to Todo List</h1>
-          <form action="#" id="todoForm">
-            <textarea id="listFormTxt" ></textarea>
+        <!-- <h1>My Todo List</h1> -->
+          <form action="#" id="todoForm" >
+            <textarea id="listFormTxt" placeholder='Add Your Todo List'></textarea>
             <button id="listAddButton" type="submit" value="+">+</button>
           </form> 
       </div>  
@@ -29,7 +32,7 @@
 
     <div class = "container container3">
       
-        <h2>Todo List</h2>
+        <h2>Todo Lists</h2>
          
           <ul id="newList">
             <!--<li>
@@ -44,8 +47,8 @@
     <div id='display'></div>
 
     
-
-    <!-- <div class="container container4" id="taskContainer">
+<!-- 
+    <div class="container container4" id="taskContainer">
       <h2 class="title">Task Title</h2>
       <div class="taskFormDiv">
           <form action="#" class="taskForm">
@@ -54,12 +57,12 @@
           </form>  
       </div>  
       <div class="tasks">
-        <ul class"newTask">
+        <ul class="newTask">
           <li> 
-            <span class="spanClass"></span>
-            <button class="removeList></button>
-            <button class="editList></button>
-            <input type ="checkbox" class="complete"
+            <span class="spanClass">apples</span>
+            <button class="removeList"></button>
+            <button class="editList"></button>
+            <input type ="checkbox" class="complete">
           </li>
         </ul>
       </div>

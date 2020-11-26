@@ -167,6 +167,7 @@ newListFormItem.addEventListener('submit', e => {
   function taskCard(){
 
     let dropDownCont = document.getElementById('display');
+    const taskButton = document.createElement('button');
 
     //Create container div
     const taskCont = document.createElement('div');
@@ -178,60 +179,78 @@ newListFormItem.addEventListener('submit', e => {
     //---------------Task Title from todo list item--------------
     let taskLiTitle = document.createElement('h2');
     taskLiTitle.class= "title";
+    taskLiTitle.style.textDecoration = 'underline';
+   
 
     let spans = newList.querySelectorAll("span");
 
     spans.forEach(function(span){
       if(span.className === "selected"){
-        let spanTextNeeded = span.innerText;
+        let spanTextNeeded = span.innerText.toUpperCase();
         taskLiTitle.innerText = spanTextNeeded;
         taskCont.appendChild(taskLiTitle);
       } 
     });
 
-    //=======Create Task Area========//
-
     taskCont.appendChild(taskLiTitle);
 
-    //TASK FORM DIV
-    //Create task form Div
-    const taskFormDiv = document.createElement('div');
-    taskFormDiv.classList.add = 'taskFormDiv';
-    taskCont.appendChild(taskFormDiv);
+     //Add taskCont to dropDown Container
+     dropDownCont.appendChild(taskCont);
+    //=======Create Task Area========//
 
-    //-----TASK FORM
-    //Create task form
-    const taskForm = document.createElement('form');
-    taskForm.setAttribute('action', '#');
-    taskForm.classList.add = 'taskForm';
-    taskFormDiv.appendChild(taskForm);
    
-    //Create task textarea
-    let taskText = document.createElement('TEXTAREA');
-    taskText.id = 'taskFormTxt';
-    taskForm.appendChild(taskText);
     
 
-    //Create task input button
-    const taskButton = document.createElement('button');
-    taskButton.id = 'taskAddButton';
-    taskButton.setAttribute('type', 'submit')
-    taskButton.setAttribute('value', '+')
-    taskButton.innerText = '+';
-    taskForm.appendChild(taskButton);
+   
+
+    
     
     //Create tasks div
     const taskDiv = document.createElement('div')
-    taskDiv.classList.add = 'tasks';
+    taskDiv.class= 'tasks';
     taskCont.appendChild(taskDiv);
+    console.log(taskDiv);
     
     // Create task ul
     taskUl = document.createElement('ul');
     taskUl.classList.add = 'newTask';
     taskDiv.appendChild(taskUl);
 
-    //Add taskCont to dropDown Container
-    dropDownCont.appendChild(taskCont);
+    console.log(taskUl);
+
+    //==========================================================//
+      //-----TASK FORM
+
+
+      //TASK FORM DIV
+      //Create task form Div
+      const taskFormDiv = document.createElement('div');
+      taskFormDiv.classList.add = 'taskFormDiv';
+      //Create task form
+      const taskForm = document.createElement('form');
+      taskForm.setAttribute('action', '#');
+      taskForm.classList.add = 'taskForm';
+      taskFormDiv.appendChild(taskForm);
+    
+      //Create task textarea
+      let taskText = document.createElement('TEXTAREA');
+      taskText.id = 'taskFormTxt';
+      
+      taskForm.appendChild(taskText);
+      // document.getElementById('taskFormTxt').placeholder = 'Type Task Here';
+      
+      //Create task input button
+      
+      taskButton.id = 'taskAddButton';
+      taskButton.setAttribute('type', 'submit')
+      taskButton.setAttribute('value', '+')
+      taskButton.innerText = '+';
+      taskForm.appendChild(taskButton);
+
+      taskCont.appendChild(taskFormDiv);
+
+     
+//==========================================================//
     
     //----Button to add task details entered into taskform
     taskButton.addEventListener('click', ev5 => {
@@ -264,6 +283,8 @@ newListFormItem.addEventListener('submit', e => {
         removeTaskBtn.addEventListener('click', ev5 => {
           ev5.target.parentNode.remove();
         });
+
+
 
       //ul append li 
       taskUl.appendChild(taskLi);

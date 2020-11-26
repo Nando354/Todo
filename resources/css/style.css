@@ -21,13 +21,15 @@ body {
   font-weight: 450;
   /* font-weight: normal; */
   margin: 2em;
+  color: #3b3a30;
 }
 
 h1 {
   font-style: italic;
   color: #3b3a30;
   text-align: center;
-  font-size: 300%; 
+  font-size: 280%; 
+  text-decoration: ;
 }
 
 .container-time{
@@ -38,13 +40,13 @@ h1 {
 }
 
 .container{
-  background-color: #b2c2bf
-  border: solid;
+  background-color: #b2c2bf;
+  /* border: solid; */
   width: auto;
   height: auto;
   display: flexbox;
   padding: 20px;
-  font-size: 120%;
+  /* font-size: 120%; */
 }
 
 .mtnImg {
@@ -53,57 +55,74 @@ h1 {
 }
 
 .container1 {
- background-color: #b2c2bf
- height: 100px;
+ background-color: #b2c2bf;
+ /* height: 100px; */
 }
 
 .container2 {
-  background-color: #eaece5
-}
-
-#todoForm {
-  /* background-color: red; */
+  background-color: #c0ded9;
+  font-size: 250%;
   text-align: center;
-  /* font-size: 36px; */
-}
-
-textarea{
-  width: 400px;
-  border-radius: 25px;
-  font-size: 25px;
-  height: 35px;
-  text-align: center;
-}
-
-input[type=text] {
-  color: blue'
-  font-size: 26px;
 }
 
 .container3 {
   background-color: #c0ded9
 }
 
+ul {
+  list-style-type: none;
+}
+
+#todoForm {
+  /* background-color: red; */
+  text-align: center;
+  /* position: relative; */
+  margin: 0px;
+  padding: 0px;
+  /* font-size: 36px; */
+}
+
+textarea { 
+  width: 400px;
+  border-radius: 25px;
+  font-size: 25px;
+  height: 35px;
+  text-align: center;
+  margin-bottom: -8px;
+}
+
+input[type=text] {
+  color: blue;
+  font-size: 26px;
+}
+
 .container4 {
-  background-color: #eaece5
+  background-color: #eaece5;
 }
 
 #taskContainer {
-  background-color: #b2c2bf
+  background-color: #b2c2bf;
+  font-size: 200%;
+  text-align: center;
 }
 
-button .removeList, #listAddButton, #taskAddButton{
-  width: 25px;
-  height: 25px;
-  color: #3b3a30;
+#removeList, .removeList, #editList, .editList, #listAddButton, #taskAddButton{
+  width: 35px;
+  height: 35px;
+  /* color: #3b3a30; */
+  margin-left: 10px; 
+  position: relative;
+  bottom: 8px;
+  border-radius: 5px;
 }
 
 input[type=checkbox] {
-  width: 20px;
-  height: 20px;
+  width: 35px;
+  height: 35px;
   margin-top: 20px;
   position: relative;
   top: 5px;
+  left: 5px;
 }
 
 .selected {
@@ -113,5 +132,5 @@ input[type=checkbox] {
 
 .spanClass {
   font-weight: normal;
-  color: black;
+  color: #3b3a30;
 }

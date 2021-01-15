@@ -1,9 +1,10 @@
 
 
 //------------------Variables
-const newList = document.getElementById('newList');
-const newListFormItem = document.getElementById('todoForm');
-const newTaskFormItem = document.getElementById('taskForm');
+const newList = document.getElementById('newList');//Todo list <ul> id
+const newTask = document.getElementById('newTask');//Task list <ul> id
+const newListFormItem = document.getElementById('todoForm');//Todo Form id
+// const newTaskFormItem = document.getElementById('taskForm');
 
 //===================Date==============
 shortMonths = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
@@ -35,7 +36,7 @@ let showDate = constantDate.innerHTML = newDateForm();
 const LOCAL_STORAGE_LIST_KEY = 'task.lists';
 //Local Storage selected list id variable given an unlikely key name
 const LOCAL_STORAGE_SELECTED_LIST_ID_KEY = 'task.selectedListId';
-//lists becomes a variable that sets up an array where the object will live OR gets that list from Local Storage and also turns the list into an object
+//lists becomes a variable that sets up an array where the object will live OR gets that list from Local Storage and also turns the list into an object with pasrse
 let lists = JSON.parse(localStorage.getItem(LOCAL_STORAGE_LIST_KEY)) || [];
 //variable that will represent the id from local storage
 let selectedListId = localStorage.getItem(LOCAL_STORAGE_SELECTED_LIST_ID_KEY);
@@ -125,6 +126,7 @@ function deletedLi() {
 
 function renderLists() {
   //stops duplicates of list items
+  console.log(newList.firstChild);
   clearElement(newList)
   // console.log(listToDelete);
   //forEach so each <li> list item is created
@@ -141,7 +143,6 @@ function renderLists() {
     liSpan.innerText = list.name;
     //append span to li
     listElement.appendChild(liSpan);
-
     if(list.id === selectedListId) {
       listElement.classList.add('selected');
     }
@@ -220,6 +221,7 @@ function renderLists() {
         //    console.log(newText);
           //  lists.splice(i, 1, newLiText)
           list.name = newLiText;
+          console.log(selectedListId);
           save();
           console.log(list.name)
         }
@@ -295,14 +297,25 @@ function toggleOff() {
 //==============================================================
 //======================TaskCard Function=======================
 //==============================================================
-function createTaskList(taskName){
+
+
+
+
+
+function createTaskList(name){
   return {
-    taskId: Date.now().toString(),
-    taskName: taskName,
+    id: Date.now().toString(),
+    name: name,
   }
-  console.log('tasklist function');
 }
 
+function clearTaskElement(newTask) {
+  while (newTask.firstChild) {
+    newTask.removeChild(newTask.firstChild)
+  }
+}  
+
+//Create the taskCard that will be displayed on toggle if the list item is selected from the todo lists
 function taskCard(){
   let dropDownCont = document.getElementById('display');
   const taskButton = document.createElement('button');
@@ -319,11 +332,17 @@ function taskCard(){
   taskLiTitle.class= "title";
   taskLiTitle.style.textDecoration = 'underline';
   let spans = newList.querySelectorAll("span");
+  console.log(newList);
   spans.forEach(function(span){
     if(span.className === "selected"){
+      //grabs the text in span and makes it all uppercase
       let spanTextNeeded = span.innerText.toUpperCase();
+      //places the text in span into the h2 element taskLiTitle
       taskLiTitle.innerText = spanTextNeeded;
       taskCont.appendChild(taskLiTitle);
+      console.log(spanTextNeeded);//Text selected
+      idInNewList = span.parentNode.id
+      console.log(idInNewList); //id number as text
     } 
   });
 
@@ -340,12 +359,15 @@ function taskCard(){
   
   // Create task ul
   taskUl = document.createElement('ul');
-  taskUl.classList.add = 'newTask';
+  // taskUl.classList.add = 'newTask';
+  taskUl.id = 'newTask'
   taskDiv.appendChild(taskUl);
   console.log(taskUl);
 
   //==========================================================//
   //-----TASK FORM============================================//
+  //==========================================================//
+
   //TASK FORM DIV
   //Create task form Div
   const taskFormDiv = document.createElement('div');
@@ -377,167 +399,147 @@ function taskCard(){
   //==========================================//
   //===============FORM ENTRY=================//
   //==========================================//
-  //Notes: We need to get the id from the Titled task item to match the id from the object. We could then tell the task form text to go to the list tasks and be part of the array.. Completed
-  //Notes: Need to enter task as array into local storage
-  //==========================================================//
-  //----Button to add task details entered into taskform
+
+   //----Button to add task details entered into taskform
   taskButton.addEventListener('click', ev5 => {
     ev5.preventDefault();
+    console.log(newTask);
+    console.log(newList);
     //gets value from text area in taskform
     let taskFormTxt = document.getElementById('taskFormTxt').value;
-    //Create task li
-    taskLi = document.createElement('li');
-    //Create task Span
-    taskLiSpan = document.createElement('SPAN');
-    //add classname to task span
-    taskLiSpan.classList = 'taskSpanClass'  
-    //append span to lis
-    taskLi.appendChild(taskLiSpan);
-    //add form txt to span
-    taskLiSpan.innerText = taskFormTxt;
-    console.log(taskFormTxt)
-    //append li to ul
-    taskUl.appendChild(taskLi);
-    //clear text area
-    const clearTaskTxt = document.getElementById('taskFormTxt');
-    clearTaskTxt.value="";
-    //Create the remove button
-    const removeTaskBtn = document.createElement('button');
-    removeTaskBtn.classList = 'removeList';
-    removeTaskBtn.innerText = 'x';
-    taskLi.appendChild(removeTaskBtn);   
-    createTaskList(taskFormTxt);
     console.log(taskFormTxt);
-    saveAndRender();
-    //--inner event function -- remove li item with x button
-    removeTaskBtn.addEventListener('click', ev5 => {
-      ev5.target.parentNode.remove();
-    });
+    console.log(spans); //Shows all spans with one that is selected as well
+    //if empty return cell and user hits enter do the following after return
+    if(taskFormTxt == null || taskFormTxt === '') return
+    //creates a createList function with the text value as the parameter
+    let task = createTaskList(taskFormTxt);
+    //clears the form text input area of the text value so new text can be entered
+    taskFormTxt.value = null;
+    // clearTaskElement(newTask);
+    // spans.forEach(function(span){
+    //   if(span.className === "selected"){
+    //     console.log('hello');
+    //     console.log(idInNewList);//Selected id
 
-    //ul append li 
-    taskUl.appendChild(taskLi);
-    //add edit button, button to be pressed when editing
-    const editTaskButton = document.createElement('button');
-    editTaskButton.classList = 'editList';
-    editTaskButton.innerText = 'Edit';
-    //add edit button to li
-    taskLi.appendChild(editTaskButton);
-    //add checkbox
-    const checkBox = document.createElement('input');
-    checkBox.classList ='complete';
-    checkBox.setAttribute('type', 'checkbox');
-    taskLi.appendChild(checkBox);
+    //   } 
+    // });
 
-    //Inner event function -- text entered in span within list to be editable
-    editTaskButton.addEventListener('click', ev6 => {
-      let  editTaskLiText = ev6.target.parentNode.firstChild
-      editTaskLiText.contentEditable = true;
-      //edit text is set to focus so you can see the box glow when in edit mode
-      editTaskLiText.focus();
-      editTaskButton.style.borderStyle = 'inset';
 
-      //Inner of Inner event function -- able to edit then press enter to no longer focus off of enter keydown
-      editTaskLiText.addEventListener ("keydown", ev7 => {
-        if(ev7.keyCode === 13) {
-          ev7.preventDefault();
-          //removes focus on list item
-          editTaskLiText.contentEditable = false;
-          //removes borderstyle to show released edit button
-          editTaskButton.style.borderStyle = 'none'; 
+    console.log(lists);
+    console.log(idInNewList);
+    //Notes: Find out how to organize the below so it does not repeat for every list item
+            //==========Keeper Area========//
+
+    // lists.forEach(list => {
+    //   // console.log(list);//{id: name of 1st list item}
+    //   console.log(lists);
+    //   console.log(list.id);// first list ID number
+    //   console.log(idInNewList);//List ID not Task ID  
+    //   console.log(spans);
+    //   console.log(newTask);
+    //   console.log('Turtle Power');
+    
+     
+      // const selectedList = lists.find(list => list.id === selectedListId)
+      // console.log(selectedList);
+      for (var i =0; i < lists.length; i++)
+      // console.log(lists[i].id);//works gives all id of selected list item
+    
+        if (lists[i].id === idInNewList) {
+          console.log('Putana it works'); //works
+          console.log(lists[i]);
+          console.log(task);
+          let selectedTask = task
+          console.log(selectedTask);
+          let selectedList = lists[i].tasks.push(selectedTask);
+          console.log(selectedList);
+        
+        }
+      // }
+    // });
+            //=============New Test Area==============
+    
+        console.log(task); //works {id: #####, name: $%$%$%$%}
+    
+        saveAndRender();
+        //Create task li
+        taskLi = document.createElement('li');
+        //Create task id
+        // taskLi.id = list.id
+        // console.log(list.id);
+        //Create task Span
+        taskLiSpan = document.createElement('SPAN');
+        //add classname to task span
+        taskLiSpan.classList = 'taskSpanClass'  
+        //append span to lis
+        taskLi.appendChild(taskLiSpan);
+        //add form txt to span
+        taskLiSpan.innerText = taskFormTxt;
+        console.log(taskFormTxt)
+        //append li to ul
+        taskUl.appendChild(taskLi);
+        //clear text area
+        const clearTaskTxt = document.getElementById('taskFormTxt');
+        clearTaskTxt.value="";
+        //Create the remove button
+        const removeTaskBtn = document.createElement('button');
+        removeTaskBtn.classList = 'removeList';
+        removeTaskBtn.innerText = 'x';
+        taskLi.appendChild(removeTaskBtn);  
+        // createTaskList(taskFormTxt);
+        // console.log(taskFormTxt);
+        // saveAndRender();
+        //--inner event function -- remove li item with x button
+        removeTaskBtn.addEventListener('click', ev5 => {
+          ev5.target.parentNode.remove();
+        });
+
+        //ul append li 
+        taskUl.appendChild(taskLi);
+        //add edit button, button to be pressed when editing
+        const editTaskButton = document.createElement('button');
+        editTaskButton.classList = 'editList';
+        editTaskButton.innerText = 'Edit';
+        //add edit button to li
+        taskLi.appendChild(editTaskButton);
+        //add checkbox
+        const checkBox = document.createElement('input');
+        checkBox.classList ='complete';
+        checkBox.setAttribute('type', 'checkbox');
+        taskLi.appendChild(checkBox);
+
+        //Inner event function -- text entered in span within list to be editable
+        editTaskButton.addEventListener('click', ev6 => {
+          let  editTaskLiText = ev6.target.parentNode.firstChild
+          editTaskLiText.contentEditable = true;
+          //edit text is set to focus so you can see the box glow when in edit mode
+          editTaskLiText.focus();
+          editTaskButton.style.borderStyle = 'inset';
+
+          //Inner of Inner event function -- able to edit then press enter to no longer focus off of enter keydown
+          editTaskLiText.addEventListener ("keydown", ev7 => {
+            if(ev7.keyCode === 13) {
+              ev7.preventDefault();
+              //removes focus on list item
+              editTaskLiText.contentEditable = false;
+              //removes borderstyle to show released edit button
+              editTaskButton.style.borderStyle = 'none'; 
+              }
+            })
+        })
+
+        //Inner of Inner event function for checkbox
+        checkBox.addEventListener('click', ev7 => {
+          let editTaskOnCheck = ev7.target.parentNode.firstChild;
+          if(checkBox.checked === true) {
+            console.log(editTaskOnCheck);
+            editTaskOnCheck.style.textDecoration = 'line-through';
+          } else {
+            editTaskOnCheck.style.textDecoration = 'none'
           }
         })
-    })
-
-    //Inner of Inner event function for checkbox
-    checkBox.addEventListener('click', ev7 => {
-      let editTaskOnCheck = ev7.target.parentNode.firstChild;
-      if(checkBox.checked === true) {
-      console.log(editTaskOnCheck);
-      editTaskOnCheck.style.textDecoration = 'line-through';
-      } else {
-        editTaskOnCheck.style.textDecoration = 'none'
-      }
-    })
+    // }); 
   })
-
-  taskButton.addEventListener('click', ev8 => {
-    ev8.preventDefault();
-    console.log(newList);
-    let taskListId = ev8.target.parentNode.id;
-    console.log(taskListId);
-    console.log(lists);
-    // for (var i =0; i < lists.length; i++)
-    // console.log(lists[i].id);
-
-    //Gets the object id from the task title
-    spans.forEach(function(span){
-      if(span.className === "selected"){
-        let spanIdNeeded = span.parentNode.id
-        let spanTaskText = span.innerText
-        console.log(spanTaskText);
-        console.log(lists);
-        console.log(taskFormTxt);
-        console.log(spanIdNeeded);//object ID of span item
-        // taskLiTitle.innerText = spanTextNeeded;
-        // taskCont.appendChild(taskLiTitle);
-        for (var i =0; i < lists.length; i++){
-          console.log(lists);
-          // console.log(lists[i].id); //lists all the id's
-          // console.log(list[i].tasks);
-          if (lists[i].id === spanIdNeeded) {
-            console.log(lists);
-            console.log("hell yeah it is tasked");
-            list.task.push()
-            console.log(spanIdNeeded);
-            //console.log(editLiText);
-            console.log(i);
-            console.log(list[i].task.push());
-            ////list.name = newLiText
-            //console.log(list.name);
-            //console.log(selectedListId);
-            //let newText = editLiText 
-            //console.log(newText);
-            //lists.splice(i, 1, newLiText)
-            // list.name = newLiText;
-            // save();
-            // console.log(list.name)
-          }
-        }
-      }
-    });
-  })
-
-    // editLiText.addEventListener ("keydown", e => {
-    //   if(e.keyCode === 13) {
-    //     //removes focus on list item
-    //     editLiText.contentEditable = 'false';
-    //     //removes borderstyle to show released edit button
-    //     editButton.style.borderStyle = 'none';
-    //     // console.log(editLiText);
-    //     let newLiText = editLiText.innerText;
-    //     console.log(newLiText);
-    //     for (var i =0; i < lists.length; i++)
-    //     // // console.log(lists[i].id);
-    //     // // console.log();
-    //     if (lists[i].id === editedListId) {
-    //        console.log("hell yeah it is edited");
-    //     //    console.log(editLiText);
-    //     //    console.log(i);
-    //     //   //  list.name = newLiText
-    //     //    console.log(list.name);
-    //     //    console.log(selectedListId);
-    //     //    let newText = editLiText 
-    //     //    console.log(newText);
-    //       //  lists.splice(i, 1, newLiText)
-    //       list.name = newLiText;
-    //       save();
-    //       console.log(list.name)
-    //     }
-    //     console.log(lists);
-    //   //  save()
-    
-    //   }
-    // })
 }
 
   //Note 11-17

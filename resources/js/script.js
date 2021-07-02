@@ -5,7 +5,10 @@
 const newList = document.getElementById('newList');
 // First Form Area
 const newListFormItem = document.getElementById('todoForm');//Todo Form id
-// const newTaskFormItem = document.getElementById('taskForm');
+// const newTaskFormItem = document.getElementById('taskFormTxt');
+
+// const newTaskFormItem = document.getElementById('taskContainer');
+
 
 //===================Date==============
 shortMonths = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
@@ -62,9 +65,23 @@ newList.addEventListener('click', e => {
 //==========================================//
 //===============FORM ENTRY=================//
 //==========================================//
-//eventlistener on first todo form where the value is entered
+//eventlistener on first todo form where the value is entered into the form and added as a list item when the ENTER KEY is pressed. It calls the function formProcess which creates the list item.
+newListFormItem.addEventListener('keypress', e => {
+  // e.preventDefault();
+  if(e.key === "Enter") {
+    e.preventDefault();
+    formProcess();
+  }
+}) 
+
+//eventlistener on first todo form where the value is entered into the form and added as a list item when the BUTTON is clicked. It calls the function formProcess which creates the list item.
 newListFormItem.addEventListener('submit', e => {
   e.preventDefault();
+  formProcess();
+})
+
+
+function formProcess(){
   //declare a variable with the text value entered
   let listName = listFormTxt.value;
   // console.log(listFormTxt); //shows textarea element and its attributes
@@ -85,7 +102,8 @@ newListFormItem.addEventListener('submit', e => {
   //call the renderlists function which will create the list items and save them in local storage
   saveAndRender();
   console.log('form button clicked to submit text');
-}) 
+}
+
 
 //list text value is passed as a parameter and returns the object with the text value as a property of name
 function createList(name){
@@ -307,7 +325,8 @@ newList.addEventListener('click', toggler, false)
 let displayDiv = document.getElementById('display');
 
 function toggleOn() {
-  taskCard(); 
+  taskCard();
+  console.log('do we enter renderTasks here');
   displayDiv.style.display = 'block';
   // console.log('toggle on');
 }
@@ -384,6 +403,7 @@ function taskCard(){
   // console.log(taskUl);
   // console.log(newTask);
   // console.log(newList);
+  renderTasks();
 
   //==========================================================//
   //-----TASK FORM============================================//
@@ -421,9 +441,26 @@ function taskCard(){
   //===============FORM ENTRY=================//
   //==========================================//
 
-   //----Button to add task details entered into taskform
+  //create a const to get the element by ID, have to create it here so that the element is in existence when I call it
+  const newTaskFormItem = document.getElementById('taskForm');
+
+  //eventlistener on Task todo form where the value is entered into the form and added as a Task item when the ENTER KEY is pressed. It calls the function taskFormProcess which creates the task item.
+  newTaskFormItem.addEventListener('keypress', ev5 => {
+    if(ev5.key === "Enter") {
+      ev5.preventDefault();
+      taskFormProcess();
+    }
+  })
+
+  //eventlistener on Task todo form where the value is entered into the form and added as a Task item when the BUTTON is clicked. It calls the function taskFormProcess which creates the task item.
   taskButton.addEventListener('click', ev5 => {
     ev5.preventDefault();
+    taskFormProcess();
+    console.log(newTaskFormItem);
+  });
+
+
+  function taskFormProcess(){
     // console.log(newTask);//<ul id='newTask' ..This is where problem exists 4.12.2021 it should be pulling the text entered in the task form area
     // console.log(newList);
     //gets value from text area in taskform
@@ -487,7 +524,7 @@ function taskCard(){
 
       saveAndRender();
       renderTasks();
-  });
+  };
             //=============New Test Area==============
   // console.log(newTask);
   // console.log(newTask.firstChild);
@@ -608,7 +645,7 @@ function taskCard(){
           
             //clear text area
             const clearTaskTxt = document.getElementById('taskFormTxt');
-            clearTaskTxt.value="";
+            // clearTaskTxt.value="";
             // //Create the remove button
             // const removeTaskBtn = document.createElement('button');
             const removeTaskBtn = document.createElement('button');

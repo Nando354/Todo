@@ -29,6 +29,7 @@ h1 {
   color: #3b3a30;
   text-align: center;
   font-size: 280%; 
+  -webkit-text-decoration: ; 
   text-decoration: ;
 }
 
@@ -133,4 +134,11 @@ input[type=checkbox] {
 .spanClass {
   font-weight: normal;
   color: #3b3a30;
+}
+/* Cross out selected item once completed */
+.crossOut {
+  text-decoration: line-through;
+}
+.noCrossOut {
+  text-decoration: none;
 }

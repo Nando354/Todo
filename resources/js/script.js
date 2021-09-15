@@ -4,7 +4,7 @@
 // Todo list <ul> id
 const newList = document.getElementById('newList');
 // First Form Area
-const newListFormItem = document.getElementById('todoForm');//Todo Form id
+const newtFormItem = document.getElementById('todoForm');//Todo Form id
 // const newTaskFormItem = document.getElementById('taskFormTxt');
 
 // const newTaskFormItem = document.getElementById('taskContainer');
@@ -101,7 +101,7 @@ function formProcess(){
   // console.log(list); // Ans: Object by itself not in the array
   //call the renderlists function which will create the list items and save them in local storage
   saveAndRender();
-  console.log('form button clicked to submit text');
+//  console.log('form button clicked to submit text');
 }
 
 
@@ -326,7 +326,7 @@ let displayDiv = document.getElementById('display');
 
 function toggleOn() {
   taskCard();
-  console.log('do we enter renderTasks here');
+//  console.log('do we enter renderTasks here');
   displayDiv.style.display = 'block';
   // console.log('toggle on');
 }
@@ -521,18 +521,40 @@ function taskCard(){
       // }
       // console.log(task.name); //works {id: #####, name: $%$%$%$%}
       // console.log(task.id);
-
+    
+      //The task entered into the form is saved into the array of objects as a new task within the selected list item
       saveAndRender();
       renderTasks();
   };
             //=============New Test Area==============
   // console.log(newTask);
   // console.log(newTask.firstChild);
+  //Stops the task list from duplicating the first task item in the UL for the task lists which has the ID newTask
   function clearTaskElement(newTask) {
     while (newTask.firstChild) {
       newTask.removeChild(newTask.firstChild)
     }
   }        
+  
+  
+  function deletedTask() {
+    for (var i = 0; i < lists.length; i++){
+      for(let n = 0, t = lists[i].tasks.length; n < t; n++){
+        if(lists[i].tasks[n].id === deletedTaskId){
+          console.log('it works')
+          console.log(n)
+          console.log(lists[i])
+          console.log(lists[i].tasks)
+          console.log(lists[i].tasks[n])
+          lists[i].tasks.splice([n],1);
+          console.log(lists[i])
+          break;
+          save();
+          renderTasks();
+        }
+      }
+    }
+  }
   //Create the remove button
   // const removeTaskBtn = document.createElement('button');
   // const editTaskButton = document.createElement('button');
@@ -547,9 +569,12 @@ function taskCard(){
         //Notes: Add tasks into the ul below from the local storage so they display when the list item is selected
 
         //==========================================
+  
+
   function renderTasks(){  
     // var ex = document.getElementById('newTask').firstChild.innerHTML;
     // console.log(ex);
+    //Calls the function that stops first task list item from duplicating in the displayed ul
     clearTaskElement(newTask);
     // for(const prop in lists){
     //   console.log(lists[prop]);
@@ -573,19 +598,21 @@ function taskCard(){
           //lists all tasks entered
           var tasksInLists = lists[i].tasks[n];
           var arrayOfTasks = lists[i].tasks
-          console.log(Array.isArray(arrayOfTasks));//true
-          console.log(arrayOfTasks);
-          console.log(Array.isArray(tasksInLists));//false
-          console.log(typeof(tasksInLists));//object
-          console.log(tasksInLists);//{id: "1621009449631", name: "Inner22", complete: false}
+//          console.log(Array.isArray(arrayOfTasks));//true
+//          console.log(tasksInLists);
+//          console.log(tasksInLists.id);
+//          console.log(arrayOfTasks);
+//          console.log(n)
+//          console.log(Array.isArray(tasksInLists));//false
+//          console.log(typeof(tasksInLists));//object
+//          console.log(tasksInLists);//{id: "1621009449631", name: "Inner22", complete: false}
           // console.log(tasksInLists.name);
           // console.log(n);
           // console.log(tasksInLists.id);
           // console.log(tasksInLists.parentNode);
           // console.log(newTask);
-          console.log(lists[i].tasks[n].id);
-          
-          
+//          console.log(lists[i].tasks[n].id);// #id of task
+//          console.log(lists[i].tasks[n].complete);
           
                 
                 
@@ -616,7 +643,7 @@ function taskCard(){
           
             //add a span element
             // TaskiSpan = document.createElement('SPAN');
-            // //add a class to the span element
+            // //add a class to the span exlement
             // liSpan.classList.add('spanClass');
             // //text inside the span
             // liSpan.innerText = list.name;
@@ -631,8 +658,46 @@ function taskCard(){
             // console.log(list.id);
             //Create task Span
             taskLiSpan = document.createElement('SPAN');
-            //add classname to task span
-            taskLiSpan.classList = 'taskSpanClass'  
+//            let completeFinder = arrayOfTasks.find(taskInLi => {
+//                if(taskInLi.complete === true){
+//                  taskLiSpan.classList = 'crossOut';
+//                  console.log(taskInLi.name);
+//                } else if(taskInLi.complete === false){
+//                  taskLiSpan.classList = 'noCrossOut';
+//                  console.log(taskInLi.name);
+//                }
+//              })
+//            arrayOfTasks.forEach(taskForChecks => {
+//              console.log(taskForChecks);
+//              if(taskForChecks.id === tasksInLists.id && taskForChecks.complete === true){
+//                taskLiSpan.classList = 'crossOut';
+//                console.log(taskForChecks.name);
+//                console.log(taskForChecks.complete);
+//              } else if(taskForChecks.complete === false){
+//                  taskLiSpan.classList = 'noCrossOut';
+//                  console.log(taskForChecks.name);
+//                  console.log(taskForChecks.complete);
+//              }
+//            });
+            //Looks through each task and checks the LS. If it is not checked off it should be set as complete === false so the class list should be 'noCrossOut' making the task not have a line-through or cross out. This checks every task.
+            if(tasksInLists.complete === false){
+              taskLiSpan.classList = 'noCrossOut';
+            } else if (tasksInLists.complete === true){
+              taskLiSpan.classList = 'crossOut';
+            }
+//            //add classname to task span
+//            taskLiSpan.classList = 'noCrossOut'  
+//            taskLiSpan.classList = 'noCrossOut';
+//            console.log(tasksInLists.complete)
+          
+//            if(tasksInLists.complete = false){
+//              console.log("it is set to false")
+////              taskLiSpan.classList = 'noCrossOut';
+//            } else if (tasksInLists.complete = true){
+//              console.log("it is set to true")
+////              taskLiSpan.classList = 'crossOut';
+//            }
+            let task = tasksInLists.name        
             //text inside the span
             taskLiSpan.innerText = tasksInLists.name;
             //append span to lis
@@ -699,9 +764,78 @@ function taskCard(){
             //// createTaskList(taskFormTxt);
             //// console.log(taskFormTxt);
             //// saveAndRender();
-            //--inner event function -- remove li item with x button
+            //--inner event function -- remove task item with x button
             removeTaskBtn.addEventListener('click', ev5 => {
               ev5.target.parentNode.remove();
+              //give a variable name to the task id that will be deleted
+              deletedTaskId = ev5.target.parentNode.id;
+              console.log(deletedTaskId);
+              console.log('remove button clicked')
+//              console.log(tasksInLists.id)//gives last id in tasks
+              
+              console.log(arrayOfTasks);
+//              console.log(arrayOfTasks.id)
+//              let taskObjIds = arrayOfTasks.id;
+//                console.log(taskObjIds);
+//                let idInTaskObjDelete = taskObjIds.filter(checkId)
+//                function checkId(idTask) {
+//                  return idTask === deletedTaskId;
+//                }
+//                console.log(taskObjIds);
+//              
+////          //for loop through each task array with the purpose of finding the id in the array    
+              for(var t = 0; t < arrayOfTasks.length; t++){
+//                console.log(arrayOfTasks[t]);
+//                console.log(arrayOfTasks[t].id);
+//                if(arrayOfTasks[t].id === deletedTaskId)
+//                  console.log(arrayOfTasks[t]);
+//                  break;
+                let taskObjIds = arrayOfTasks[t].id;
+//                console.log(taskObjIds);
+                //filter through each task array with function checkId to pull the idTask.id if it matches the evt.parent.id deletedTaskId then splice the task in the array from the object stored in LS
+                let taskToDelete = arrayOfTasks.filter(checkId)
+                function checkId(idTask){
+//                  console.log(idTask.id);
+                  if(idTask.id === deletedTaskId){
+                    console.log(idTask.id)
+                    console.log(idTask.name)
+                    console.log(n)
+                    console.log(arrayOfTasks[n]);
+                    arrayOfTasks.splice([n],1)
+//                    break;
+                    save();
+                    renderTasks();
+//                    console.log(lists[i])
+//                    console.log(lists[i].tasks)
+//                    console.log(lists[i].tasks[n])
+//                    lists[i].tasks.splice([n],1);
+                  }
+//                  return idTask.id === deletedTaskId
+                }
+                
+//                console.log(taskToDelete);
+//                console.log(taskToDelete.id);
+                break;
+//                save();
+//                renderTasks();
+//                let idInTaskObjDelete = taskObjIds.filter(checkId)
+//                function checkId(idTask) {
+//                  return idTask === deletedTaskId;
+//                }
+//                console.log(taskObjIds);
+              }
+              
+              //should turn tasksInLists.name into a variable like task
+//              if(tasksInLists.id === deletedTaskId){
+//                console.log('it works')
+//                console.log(n)
+//                console.log(lists[i])
+////                console.log(lists[i].tasks)
+//                console.log(lists[i].tasks[n])
+//                arrayOfTasks.splice([n],1);
+//              }
+              saveAndRender();
+//              deletedTask(task);
             });
 
             //ul append li 
@@ -736,10 +870,11 @@ function taskCard(){
                   editTaskButton.style.borderStyle = 'none'; 
                 }
               })
-            })
+            })                   
 
             //Inner of Inner event function for checkbox
             checkBox.addEventListener('click', ev7 => {
+              //Look at the parent task list item where you clicked the checkbox and look at the first child which is the span which has the cross out class and the name of the task as text. Other children are the other buttons such as remove and edit and check of course
               let editTaskOnCheck = ev7.target.parentNode.firstChild;
               console.log(editTaskOnCheck);
               // var innerTaskList = newTask.querySelectorAll('li');
@@ -752,6 +887,7 @@ function taskCard(){
               //   console.log('testing checkbox if checked not true');
               // }
               // console.log(ev7.target.parentNode.id);
+              //ID of the task list item
               let thisTaskId = ev7.target.parentNode.id;
               console.log(thisTaskId);
               //id# of each task
@@ -786,24 +922,68 @@ function taskCard(){
               //   }
               //   return tasking;
               // }
-
+              
+              //Create functions to cross out and uncross the tasks with linethrough, these functions will be called from the taskFinder below
+              
+              const disengageCrossOut = ()=> {
+                console.log('function disnengageCrossOut was tripped')
+                editTaskOnCheck.removeAttribute('class', 'crossOut');
+                editTaskOnCheck.setAttribute('class', 'noCrossOut');
+//                tasksInLists.complete = false;
+                console.log(tasksInLists)
+//                saveAndRender();
+//                renderTasks();
+              }
+              
+              const engageCrossOut = ()=> {
+                console.log('function engageCrossOut was tripped')
+                editTaskOnCheck.removeAttribute('class', 'noCrossOut');
+                editTaskOnCheck.setAttribute('class', 'crossOut');
+                console.log(tasksInLists.complete)
+//                tasksInLists.complete = "true"
+                console.log(tasksInLists)
+//                saveAndRender();
+//                renderTasks();
+              }
+              
+//              engageCrossOut();
               //use find to look through the array and find the object with the matching ID.. We need to then change the objects so that it is checkmarked and also saved to LS
-              let taskFinder = arrayOfTasks.find(taskInLi => { if(taskInLi.id === thisTaskId && checkBox.checked === false) {
-                console.log('it is checked already so uncheck mark it');
-                editTaskOnCheck.style.textDecoration = 'none';
-                // checkBox.checked = false;
-                taskInLi.complete = false;
-                } else if(taskInLi.id === thisTaskId && checkBox.checked === true){
-                  
-                  console.log('it is not checked already so check mark it');
-                  editTaskOnCheck.style.textDecoration = 'line-through';
-                  // checkBox.checked = true;
+//              let taskFinder = arrayOfTasks.find(taskInLi => { if(taskInLi.id === thisTaskId && tasksInLists.complete === false && editTaskOnCheck){
+////                  console.log(editTaskOnCheck)
+//                  console.log('it is not checked already so now it is being set to checked');
+//                  engageCrossOut();
+//                
+//                } else if(taskInLi.id === thisTaskId && tasksInLists.complete === true) {
+////              let taskFinder = arrayOfTasks.find(taskInLi => {if(tasksInLists.complete === true) {
+////                console.log(editTaskOnCheck)
+//                console.log('it is checked already so now it is being set to unchecked');
+//                disengageCrossOut();
+////                tasksInLists.complete = false;
+////                saveAndRender();
+//////                renderTasks();
+////                  tasksInLists.complete = true;
+////                  saveAndRender();
+//////                  renderTasks();
+////                  console.log(editTaskOnCheck);
+//                }
+////                console.log(tasksInLists);
+//              })
+              
+              let taskFinder = arrayOfTasks.find(taskInLi => {
+                if(taskInLi.id === thisTaskId && editTaskOnCheck.classList.contains("noCrossOut")){
+                  console.log("check it")
+                  engageCrossOut();
                   taskInLi.complete = true;
+//                  saveAndRender();
+                } else if(taskInLi.id === thisTaskId && editTaskOnCheck.classList.contains("crossOut")){
+                  console.log("uncheck it")
+                  disengageCrossOut();
+                  taskInLi.complete = false;
+//                  saveAndRender();
                 }
-                console.log(tasksInLists);
-            })
-
-              console.log(taskFinder);
+              })
+              console.log(editTaskOnCheck);
+//              console.log(taskFinder);
               console.log(tasksInLists);
               // console.log(taskInLi);
               console.log(arrayOfTasks);
@@ -846,6 +1026,7 @@ function taskCard(){
               //saving this to LS so it stays in memory and does not refresh with checkbox as empty
               // saveAndRender()
               saveAndRender();
+//              renderTasks();
             })
             // console.log(lists);
             //append li to ul

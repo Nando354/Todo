@@ -4,7 +4,7 @@
 // Todo list <ul> id
 const newList = document.getElementById('newList');
 // First Form Area
-const newtFormItem = document.getElementById('todoForm');//Todo Form id
+const newListFormItem = document.getElementById('todoForm');//Todo Form id
 // const newTaskFormItem = document.getElementById('taskFormTxt');
 
 // const newTaskFormItem = document.getElementById('taskContainer');
@@ -71,6 +71,8 @@ newListFormItem.addEventListener('keypress', e => {
   if(e.key === "Enter") {
     e.preventDefault();
     formProcess();
+    //scroll to bottom of page when enter is pressed on list form
+    window.scrollTo(0,1000);
   }
 }) 
 
@@ -78,6 +80,8 @@ newListFormItem.addEventListener('keypress', e => {
 newListFormItem.addEventListener('submit', e => {
   e.preventDefault();
   formProcess();
+  //scroll to bottom of page when button is clicked on list form
+  window.scrollTo(0,1000);
 })
 
 
@@ -329,6 +333,8 @@ function toggleOn() {
 //  console.log('do we enter renderTasks here');
   displayDiv.style.display = 'block';
   // console.log('toggle on');
+  //scroll to bottom of page when the list item is clicked on todo list
+  window.scrollTo(0,1000);
 }
 
 function toggleOff() {
@@ -449,6 +455,11 @@ function taskCard(){
     if(ev5.key === "Enter") {
       ev5.preventDefault();
       taskFormProcess();
+      //scroll to bottom of page when enter is pressed on task form
+      window.scrollTo(0,1000);
+//      let taskDivArea = document.getElementById('display');
+//      taskDivArea.scrollTop = taskDivArea.scrollHeight;
+//      console.log(taskDivArea)
     }
   })
 
@@ -457,6 +468,9 @@ function taskCard(){
     ev5.preventDefault();
     taskFormProcess();
     console.log(newTaskFormItem);
+    //scroll to bottom of page when button is clicked on task form
+    window.scrollTo(0,1000);
+ 
   });
 
 

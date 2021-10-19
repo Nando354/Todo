@@ -141,9 +141,9 @@ input[type=checkbox] {
   color: #3b3a30;
 }
 /* Cross out selected item once completed */
-.crossOut {
+.crossOut, .listCrossOut {
   text-decoration: line-through;
 }
-.noCrossOut {
+.noCrossOut, .listNoCrossOut {
   text-decoration: none;
 }

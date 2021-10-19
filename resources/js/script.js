@@ -114,6 +114,7 @@ function createList(name){
   return {
     id: Date.now().toString(),
     name: name,
+    completedTasks: false,
     tasks: []
   }
 }
@@ -169,7 +170,7 @@ function renderLists() {
     //add a span element
     liSpan = document.createElement('SPAN');
     //add a class to the span element
-    liSpan.classList.add('spanClass');
+    liSpan.classList.add('spanClass', 'listNoCrossOut');
     //text inside the span
     liSpan.innerText = list.name;
     //append span to li
@@ -583,7 +584,10 @@ function taskCard(){
         //Notes: Add tasks into the ul below from the local storage so they display when the list item is selected
 
         //==========================================
-  
+  function reviewChecks(){
+      var cont = document.getElementById('newTask').children;
+      console.log(cont);
+  }
 
   function renderTasks(){  
     // var ex = document.getElementById('newTask').firstChild.innerHTML;
@@ -611,7 +615,10 @@ function taskCard(){
           // console.log('hi');
           //lists all tasks entered
           var tasksInLists = lists[i].tasks[n];
-          var arrayOfTasks = lists[i].tasks
+          var arrayOfTasks = lists[i].tasks;
+          var listName = lists[i].name;
+          var listTask= lists[i].completedTasks;
+          var listId = lists[i].id;
 //          console.log(Array.isArray(arrayOfTasks));//true
 //          console.log(tasksInLists);
 //          console.log(tasksInLists.id);
@@ -886,7 +893,7 @@ function taskCard(){
               })
             })                   
 
-            //Inner of Inner event function for checkbox
+            //Inner of Inner event function for checkbox to be checked or unchecked and also cause the complete in local storage to be set to true or false
             checkBox.addEventListener('click', ev7 => {
               //Look at the parent task list item where you clicked the checkbox and look at the first child which is the span which has the cross out class and the name of the task as text. Other children are the other buttons such as remove and edit and check of course
               let editTaskOnCheck = ev7.target.parentNode.firstChild;
@@ -1001,6 +1008,70 @@ function taskCard(){
               console.log(tasksInLists);
               // console.log(taskInLi);
               console.log(arrayOfTasks);
+              
+//              
+//              let taskCompleteChecker = arrayOfTasks.forEach(innerCheck =>{
+//                console.log(innerCheck);
+//              })
+              
+              //function that is tripped when all the checkboxes are checked in the tasks items. Trying to use this function to mark tasksCompleted in LS as true and also set the span to ListCrossOUt so it has a linethrough
+              const engageListCrossOut = ()=> {
+                console.log('function engageListCrossOut was tripped')
+                console.log(lists)
+                console.log(ev7.target.parentNode)
+                //does not save to LS yet but does change it to true
+                console.log(listName)
+                listTask = true;
+                console.log(listTask)
+                console.log(lists)
+                console.log(listId)
+                console.log(newList)
+                console.log(typeof(newList))
+                listThings = newList.querySelectorAll('span')
+                console.log(arrayOfTasks)
+                console.log(idInNewList)
+                
+                for(let listSelection of lists){
+                  console.log(listSelection);
+                  
+                }
+                
+//                for(let listSelection of listThings){
+//                  if(listSelection.className = 'spanClass') {
+//                    console.log('hell yeah')
+//                    if(listSelection.id = listId) {
+//                      console.log('id matches')
+//                      console.log(listId)
+//                      console.log(newList);
+//                      console.log(lists.name)
+//                      for(var i =0; i < lists.length; i++) {
+//                        if(lists[i].id === listSelection.id)
+//                          console.log('works again')
+//                          console.log(lists[i].name)
+//                          lists[i].completedTasks = true;
+//                          console.log(lists[i].completedTasks);
+//                        
+//                      }
+//                    }
+//                  }
+//                }
+                
+//                editTaskOnCheck.removeAttribute('class', 'ListNoCrossOut');
+//                editTaskOnCheck.setAttribute('class', 'ListCrossOut');
+              }
+              
+              
+              
+              
+              //checks if every check box in every task item is checked and therefore the complete is set to true
+              let taskCompleteChecker = arrayOfTasks.every( taskInLi => taskInLi.complete === true)
+              
+              console.log(taskCompleteChecker);
+              
+              if(taskCompleteChecker === true){
+                console.log('everycheck box in tasks is complete so set off engageListCrossOut Function')
+                engageListCrossOut();
+              }
               // tasksInLists.filter (innerTasks => {
               // // tasksInLists.forEach(innerTasks => {
               //   // console.log(innerTasks);
@@ -1039,9 +1110,12 @@ function taskCard(){
               // }
               //saving this to LS so it stays in memory and does not refresh with checkbox as empty
               // saveAndRender()
+              reviewChecks();
               saveAndRender();
 //              renderTasks();
             })
+          
+          
             // console.log(lists);
             //append li to ul
             taskUl.appendChild(taskListElement);

@@ -1017,21 +1017,26 @@ function taskCard(){
               //function that is tripped when all the checkboxes are checked in the tasks items. Trying to use this function to mark tasksCompleted in LS as true and also set the span to ListCrossOUt so it has a linethrough
               const engageListCrossOut = ()=> {
                 console.log('function engageListCrossOut was tripped')
-                console.log(lists)
-                console.log(ev7.target.parentNode)
-                //does not save to LS yet but does change it to true
+                //Todo: find specific list item, these variables were declared earlier
                 console.log(listName)
-                listTask = true;
                 console.log(listTask)
                 console.log(lists)
                 console.log(listId)
                 console.log(newList)
                 console.log(typeof(newList))
                 listThings = newList.querySelectorAll('span')
+                console.log(listThings)
                 console.log(arrayOfTasks)
                 console.log(idInNewList)
-                
+                //List item related to tasks that are all checked off has completedTasks set to true and saved in LS
                 for(let listSelection of lists){
+//                  console.log(listSelection);
+                  console.log(listSelection.completedTasks);
+                  console.log(listSelection.id);
+                  if(listSelection.id === listId){
+                    console.log("yes trying to find only list item with this id")
+                  }
+                  listSelection.completedTasks = true;
                   console.log(listSelection);
                   
                 }

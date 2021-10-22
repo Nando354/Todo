@@ -1120,7 +1120,7 @@ function taskCard(){
 //              renderTasks();
             })
           
-          
+            console.log("hello I just did a clone to another computer and am testing it")
             // console.log(lists);
             //append li to ul
             taskUl.appendChild(taskListElement);

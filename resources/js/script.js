@@ -88,7 +88,7 @@ newListFormItem.addEventListener('submit', e => {
 function formProcess(){
   //declare a variable with the text value entered
   let listName = listFormTxt.value;
-  // console.log(listFormTxt); //shows textarea element and its attributes
+  console.log(listFormTxt); //shows textarea element and its attributes
   // console.log(listFormTxt.value) //shows value typed into form
   //if empty return cell and user hits enter do the following after return
   if(listName == null || listName === '') return
@@ -158,7 +158,7 @@ function deletedLi() {
 
 function renderLists() {
   //stops duplicates of list items
-  // console.log(newList.firstChild);
+  console.log(newList.firstChild);
   clearElement(newList)
   // console.log(listToDelete);
   //forEach so each <li> list item is created
@@ -169,8 +169,14 @@ function renderLists() {
     listElement.id = list.id;
     //add a span element
     liSpan = document.createElement('SPAN');
+    console.log("this is where we are testing the crossout list")
+    console.log(list.completedTasks);
     //add a class to the span element
+    if(list.completedTasks === false){
     liSpan.classList.add('spanClass', 'listNoCrossOut');
+    } else if (list.completedTasks === true){
+      liSpan.classList.add('spanClass', 'listCrossOut');
+    }
     //text inside the span
     liSpan.innerText = list.name;
     //append span to li
@@ -195,7 +201,7 @@ function renderLists() {
       //give a variable name to the id that will be deleted
       deletedListId = e.target.parentNode.id;
       // let deletedListItem = JSON.parse(list)
-      // console.log(list); // The specific list item that belongs to the button
+      console.log(list); // The specific list item that belongs to the button
       // console.log('remove button clicked');
       deletedLi(list);
     });
@@ -1035,9 +1041,11 @@ function taskCard(){
                   console.log(listSelection.id);
                   if(listSelection.id === listId){
                     console.log("yes trying to find only list item with this id")
+                    listSelection.completedTasks = true;
+                    console.log(listSelection);
                   }
-                  listSelection.completedTasks = true;
-                  console.log(listSelection);
+                  
+                 
                   
                 }
                 

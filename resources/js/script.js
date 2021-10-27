@@ -88,7 +88,7 @@ newListFormItem.addEventListener('submit', e => {
 function formProcess(){
   //declare a variable with the text value entered
   let listName = listFormTxt.value;
-  console.log(listFormTxt); //shows textarea element and its attributes
+  // console.log(listFormTxt); //shows textarea element and its attributes
   // console.log(listFormTxt.value) //shows value typed into form
   //if empty return cell and user hits enter do the following after return
   if(listName == null || listName === '') return
@@ -158,7 +158,7 @@ function deletedLi() {
 
 function renderLists() {
   //stops duplicates of list items
-  console.log(newList.firstChild);
+  // console.log(newList.firstChild);
   clearElement(newList)
   // console.log(listToDelete);
   //forEach so each <li> list item is created
@@ -169,13 +169,15 @@ function renderLists() {
     listElement.id = list.id;
     //add a span element
     liSpan = document.createElement('SPAN');
-    console.log("this is where we are testing the crossout list")
-    console.log(list.completedTasks);
+    // console.log("this is where we are testing the crossout list")
+    // console.log(list.completedTasks);
     //add a class to the span element
     if(list.completedTasks === false){
     liSpan.classList.add('spanClass', 'listNoCrossOut');
+    console.log('the span is false due to LS being false')
     } else if (list.completedTasks === true){
       liSpan.classList.add('spanClass', 'listCrossOut');
+      console.log('the span is true due to LS being true')
     }
     //text inside the span
     liSpan.innerText = list.name;
@@ -1020,7 +1022,7 @@ function taskCard(){
 //                console.log(innerCheck);
 //              })
               
-              //function that is tripped when all the checkboxes are checked in the tasks items. Trying to use this function to mark tasksCompleted in LS as true and also set the span to ListCrossOUt so it has a linethrough
+              //function that is tripped when all the checkboxes are checked in the tasks items. Trying to use this function to mark tasksCompleted in LS as true and also set the span to ListCrossOut so it has a linethrough
               const engageListCrossOut = ()=> {
                 console.log('function engageListCrossOut was tripped')
                 //Todo: find specific list item, these variables were declared earlier
@@ -1040,7 +1042,8 @@ function taskCard(){
                   console.log(listSelection.completedTasks);
                   console.log(listSelection.id);
                   if(listSelection.id === listId){
-                    console.log("yes trying to find only list item with this id")
+                    console.log("yes trying to find only list item with this id and setting LS completedTasks to TRUE")
+                    //TODO:Sets the Local Storage to True
                     listSelection.completedTasks = true;
                     console.log(listSelection);
                   }
@@ -1072,19 +1075,45 @@ function taskCard(){
 //                editTaskOnCheck.removeAttribute('class', 'ListNoCrossOut');
 //                editTaskOnCheck.setAttribute('class', 'ListCrossOut');
               }
-              
-              
-              
-              
-              //checks if every check box in every task item is checked and therefore the complete is set to true
-              let taskCompleteChecker = arrayOfTasks.every( taskInLi => taskInLi.complete === true)
-              
-              console.log(taskCompleteChecker);
-              
-              if(taskCompleteChecker === true){
-                console.log('everycheck box in tasks is complete so set off engageListCrossOut Function')
-                engageListCrossOut();
+
+              const engageListNoCrossOut = ()=> {
+                console.log('function engageListNoCrossOut was tripped')
+                for(let listSelection of lists){
+                  if(listSelection.id === listId){
+                    listSelection.completedTasks = false;
+                    console.log(listSelection);
+                  }
+                }
               }
+              
+              
+              
+              
+              //checks if every check box in every task item is checked and therefore the complete is set to true. The every() method returns true if all elements in an array pass a test, provided as an arrow function below, Cheching if taskInLi is all complete === true.
+              let taskCompleteChecker = arrayOfTasks.every(taskInLi =>
+                taskInLi.complete === true);
+
+              console.log(taskCompleteChecker)
+
+              if(taskCompleteChecker === false){
+                engageListNoCrossOut();
+                console.log("hello it is false")
+              } else if(taskCompleteChecker === true){
+                engageListCrossOut();
+                console.log("hello it is true")
+              }            
+
+
+              
+              
+              // if(taskCompleteChecker === true){
+              //   console.log('everycheck box in tasks is complete so set off engageListCrossOut Function')
+              //   engageListCrossOut();
+              // } else if {
+              //   taskInLi.complete === false)
+              //   console.log('Not all checkboxes are checked so engageListNoCrossOut function')
+              //   engageListNoCrossOut();
+              // }
               // tasksInLists.filter (innerTasks => {
               // // tasksInLists.forEach(innerTasks => {
               //   // console.log(innerTasks);

@@ -50,17 +50,10 @@ let listToDelete = localStorage.getItem(LOCAL_STORAGE_LIST_KEY)
 
 
 //Not doing anything
-newList.addEventListener('click', e => {
-  if(e.target.tagName.toLowerCase() === 'li') {
-    // if(e.target.tagName.toLowerCase() === 'button') {
-    // console.log(e.target.id)
-    // console.log('button was clicked');
-    // selectedListId = e.target.id
-    // console.log(e.target.id);
-    // console.log(selectedListId);
-    // console.log(LOCAL_STORAGE_SELECTED_LIST_ID_KEY);
-  }
-})
+// newList.addEventListener('click', e => {
+//   if(e.target.tagName.toLowerCase() === 'li') {
+//   }
+// })
 
 //==========================================//
 //===============FORM ENTRY=================//
@@ -84,7 +77,7 @@ newListFormItem.addEventListener('submit', e => {
   window.scrollTo(0,1000);
 })
 
-
+//TODO: The form area where once a list item is typed and button is clicked or enter is pressed, the list value gets added to the createList function which holds the object and also pushed to Local Storage
 function formProcess(){
   //declare a variable with the text value entered
   let listName = listFormTxt.value;
@@ -98,23 +91,19 @@ function formProcess(){
   listFormTxt.value = null;
   //pushes the list into the array lists or the object stored in local storage
   lists.push(list)
-  // saveAndRender()
-  // console.log(lists);// Ans: object as an array
-  // console.log(list.id); //Ans; the id reference number
-  // console.log(list.name);// Ans: text value entered
-  // console.log(list); // Ans: Object by itself not in the array
   //call the renderlists function which will create the list items and save them in local storage
   saveAndRender();
 //  console.log('form button clicked to submit text');
 }
 
 
-//list text value is passed as a parameter and returns the object with the text value as a property of name
+//TODO: List text value is passed as a parameter and returns the object with the text value as a property of name
 function createList(name){
   return {
     id: Date.now().toString(),
     name: name,
     completedTasks: false,
+    displayTasks: false,
     tasks: []
   }
 }
@@ -124,7 +113,7 @@ function saveAndRender() {
   renderLists();
 }
 
-//sets the key to the variable we named earlier and the object lists is stored to Local Storage as a string 
+//sets the key to the LOCAL STORAGE variable we named earlier and the object lists is stored to Local Storage as a string 
 function save() {
   localStorage.setItem(LOCAL_STORAGE_LIST_KEY, JSON.stringify(lists))
 }
@@ -156,6 +145,7 @@ function deletedLi() {
         saveAndRender();
 }
 
+//TODO: Builds the entire list section only with the delete and edit buttons as well
 function renderLists() {
   //stops duplicates of list items
   // console.log(newList.firstChild);
@@ -171,26 +161,89 @@ function renderLists() {
     liSpan = document.createElement('SPAN');
     // console.log("this is where we are testing the crossout list")
     // console.log(list.completedTasks);
+
+
+    //Note: working spans original///////////////////
     //add a class to the span element
-    if(list.completedTasks === false){
-    liSpan.classList.add('spanClass', 'listNoCrossOut');
-    console.log('the span is false due to LS being false')
-    } else if (list.completedTasks === true){
-      liSpan.classList.add('spanClass', 'listCrossOut');
-      console.log('the span is true due to LS being true')
-    }
+      // if(list.displayTasks === false){
+      //   liSpan.classList.add('spanClass');
+      //   // console.log('diplayTasks starts off as false so is spanClass');
+      // } else if(list.displayTasks === true){
+      //   liSpan.classList.add('selected');
+        // console.log('displayTasks was true so span is now selected')
+      // }
+    //Note: End working spans original///////////////
+
+
+
+    //Note: TESTING AREA SPANS////////////////////
+      if(list.displayTasks === false && list.completedTasks === false){
+        liSpan.classList.add('spanClass', 'listNoCrossOut');
+      }
+      if(list.displayTasks === true && list.completedTasks === false){
+        liSpan.classList.add('selected', 'listNoCrossOut');
+      }
+      if(list.displayTasks === false && list.completedTasks === true){
+        liSpan.classList.add('spanClass', 'listCrossOut');
+      }
+      if(list.displayTasks === true && list.completedTasks === true){
+        liSpan.classList.add('selected', 'listCrossOut');
+      }
+
+      // for (var i =0; i < lists.length; i++){
+      //   for(let n = 0, t = lists[i].tasks.length; n < t; n++){
+      //     console.log(lists[i].tasks[n])
+      //   }
+  // }
+  // }
+      
+
+    //Note: END TESTING AREA SPANS///////////////////
+
+
+
+
+    // if(list.completedTasks === false){
+      //
+    // liSpan.classList.add('spanClass');
+    // console.log('the span is false due to LS being false')
+    // // engageListNoCrossOut();
+    // } 
+    // else if (list.completedTasks === true){
+    //   liSpan.classList.add('spanClass', 'listCrossOut');
+    //   // engageListCrossOut();
+    //   console.log('the span is true due to LS being true')
+    // }
+
+    // liSpan.classList.add('focus-visible-only')
     //text inside the span
     liSpan.innerText = list.name;
     //append span to li
     listElement.appendChild(liSpan);
-    // span class becomes 'selected' if the id in Local Storage (variable selectedListId) matches the id of the list item.
-    if(list.id === selectedListId) {
-      listElement.classList.add('selected');
-    }
+    //TODO: Span class becomes 'selected' if the id in Local Storage (variable selectedListId) matches the id of the list item. This will cause the list item to be bold and will later set off the taskCard function via the toggleOn function with any tasks.
+
+    //ORIGINAL:
+    // if(list.id === selectedListId) {
+    //   listElement.classList.remove('spanClass');
+    //   listElement.classList.add('selected');
+    //   console.log('removed spanClass added selected')
+    // }
+    // else if(list.id === !selectedListId) {
+    //   listElement.classList.remove('selected');
+    //   listElement.add('spanClass');
+    //   console.log('removed selected added spanclass')
+    // }
+    //TESTING:
+    // if(list.id === selectedListId && list.completedTasks === false){
+    //   listElement.classList.add('selected', 'listNoCrossOut');
+    // } else if (list.id === selectedListId && list.completedTasks === true){
+    //     listElement.classList.add('selected', 'listCrossOut');
+    // }
     //remove button created
     const removeBtn = document.createElement('button');
     removeBtn.id = 'removeList';
     removeBtn.innerText = 'x';
+    // removeBtn.classList.add('focus-visible-only')
     listElement.appendChild(removeBtn);
 
     //==============================================================
@@ -213,6 +266,7 @@ function renderLists() {
     editButton.id = 'editList';
     editButton.innerText = 'Edit';
     //add edit button to li
+    // console.log('EditButton created 1, in renderLists()')
     listElement.appendChild(editButton);
     
     ////Inner event function -- Allows text entered in span within list to be editable -- Event of pressing edit button causes list item to have a focus and border highlight when editable
@@ -221,61 +275,70 @@ function renderLists() {
     //====================Edit Button===============================
     //==============================================================
     editButton.addEventListener('click', e => {
+      toggleOff();
+      console.log(e)
+      console.log(newList);
       // hideCont();
-      // console.log(list.name); //editable value
+      console.log(list.name); //editable value
+      list.displayTasks = false;
       let editedListId = e.target.parentNode.id;
-      // console.log(editedListId); //id of editable list item
-      // console.log(e.target); // button 
       //variable to grab the firstChild of the li item button belongs to, this is the span element which holds the text value
-      let  editLiText = e.target.parentNode.firstChild;
-      // console.log(editLiText); //span element and everything within
-      let test = typeof editLiText; 
+      let  editLiText = e.target.parentNode.firstChild;// Span Text Area
+      console.log(editLiText); //span element and everything within
+      // let test = typeof editLiText; 
       // console.log(test);//Ans: object type
       //sets the span to editable
-      editLiText.contentEditable = 'true';
+      // editLiText.contentEditable = 'true';
+      editLiText.setAttribute("contenteditable", "true");
+      // console.log(editLiText.contentEditable)
+      // console.log(editLiText.isContentEditable)
       //edit text is set to focus so you can see the box glow when in edit mode
       editLiText.focus();
+
+      // editLiText.classList.add('focus-visible-only');
+      // document.getElementById('editList').style.backgroundColor = 'Blue';
+      // console.log('edit text should be in focus')
       //make button look pressed
       editButton.style.borderStyle = 'inset';
+      // editButton.style.backgroundColor='orange';
+      // console.log(editButton);
       // console.log(editButton.style.borderStyle)
-
+      // console.log(liSpan);
+      console.log('edit button should have set off contenteditable and focus')
+      console.log('editButton created cause action 2')
+      console.log(editLiText)
       //Inner of Inner event function -- Event of pressing enter within editable text causes content to no longer be editable and for focus to be off
       editLiText.addEventListener ("keydown", e => {
         if(e.keyCode === 13) {
+          // toggleOff();
           //removes focus on list item
           editLiText.contentEditable = 'false';
           //removes borderstyle to show released edit button
-          editButton.style.borderStyle = 'none';
-          // console.log(editLiText);
+          editButton.style.borderStyle = 'solid';
+          console.log(editLiText);
           //variable created for text within editLiText span after enter is pressed
           let newLiText = editLiText.innerText;
-          // console.log(newLiText); // new text after 
+          console.log(newLiText); // new text after 
           //loop through object of arrays
-          for (var i =0; i < lists.length; i++)
-          // // console.log(lists[i].id);
+          for (var i =0; i < lists.length; i++){
+            console.log(lists[i].id);
           // // console.log();
           //if id in object matches the id of the selected li item then make the new text replace the name in the object
-          if (lists[i].id === editedListId) {
-            // console.log("hell yeah it is edited");
-            //    console.log(editLiText);
-            //    console.log(i);
-            //   //  list.name = newLiText
-            //    console.log(list.name);
-            //    console.log(selectedListId);
-            //    let newText = editLiText 
-            //    console.log(newText);
-            //  lists.splice(i, 1, newLiText)
-            //name is now the new typed text entered during edit mode and now in the variable newLiText
-            list.name = newLiText;
-            // console.log(selectedListId);//null
-            save();
-            // console.log(list.name)// new text entered after edit
-          }
+            if (lists[i].id === editedListId) {
+              list.name = newLiText;
+          //   list.displayTasks = false;
+              console.log(list.name)// new text entered after edit
+              list.displayTasks = false;
+              save();
+              renderLists()
+            }
           // console.log(lists);
+          }
         }
       })
     })
     //The new updated list appended to li
+    // listElement.appendChild(editButton);
     newList.appendChild(listElement)
   })
 }
@@ -286,8 +349,27 @@ function renderLists() {
 //==================Array of Objects End==============================
 // //We have the original todo list and we then have the task lists - todo list items are bold so you know which one is selected. We also created a pop out display container with tasklist checkboxes
 
+
+newList.addEventListener('click', e => {
+    // console.log(e.target.tagName);
+    if(e.target.tagName === "BUTTON"){
+      e.preventDefault();
+      // console.log("a button was clicked will not call toggler")
+    } else if ((e.target.tagName === "SPAN" && e.target.contentEditable === 'inherit')||(e.target.contentEditable === 'false')){
+      // (console.log("a span was clicked, set off toggler"))
+      toggler(e);
+    }
+}, false);
+   
+
 //This function is like a switch which performs certain actions if certain conditions are met and switches back and forth as needed. Here we use it to show a container with its relevant tasks in the display div if the list item gets selected otherwise it should not show a task list in display div. Toggle on function turns on the display div
 function toggler(e){
+  if(e.target.tagName === "BUTTON"){
+    // console.log('button clicked but no action taken')
+    e.preventDefault();
+  }
+  // console.log(e.target)
+  // console.log('toggler was set off')
   //represents the span where the list text is
   let listItems = newList.querySelectorAll('span');
   //where the task lists will be shown
@@ -295,54 +377,264 @@ function toggler(e){
   let removeBtn = document.getElementById('removeList')
   let editBtn = document.getElementById('editBtn');
   let emptyDiv = displayDiv.innerHTML = '';
-  
+
+  // console.log("testing")
+  // console.log(lists)
+
+  //New TODO: Once the lists are created in renderLists() if a list item is clicked on this for of statement loops through each list item. The if statement, if the target id matches the object list id it makes the object propery displayTasks be true and saves it to the object. Else if id does not match the displayTasks is set to false. It then calls renderLists again so that is updated with the new displayTasks as true. The displayTasks as true in renderLists() will then set off the classlist to be 'selected' making the list item bold. Otherwise it will be set to spanClass and not bold...The clicked list item will also cause a toggleOn() and each instance should have save() so LS is updated every time.
+  for(let list of lists){
+    // console.log(e.target)
+    // console.log(e.target.parentNode)
+    // console.log(e.target.parentNode.id)
+    // console.log(list.id)
+    //If event target is span, event id matches list id matches and is not in edit mode then make displayTasks true --- Else if make displayTasks false
+    if((e.target.nodeName === 'SPAN' && e.target.parentNode.id === list.id && e.target.contentEditable === 'inherit')|| (e.target.contentEditable === 'false')){
+    // if(e.target.parentNode.id === list.id && e.target.classList.contains('spanClass')){
+      // console.log(e.target)
+      // console.log(e.target.parentNode)
+      // console.log(e.target.parentNode.id)
+      // console.log(list.id)
+      list.displayTasks = true;
+      // toggleOn();
+      // console.log(e.target)
+      // console.log('display task should be truthy')
+      // console.log(list.name);
+      // console.log(e.target.classList)
+      // e.target.classList.remove('spanClass');
+      // console.log(e.target.classList)
+      // e.target.classList.add('selected');
+      // console.log(e.target.classList)
+      // console.log(list.name + " was clicked and disp tasks is now true")
+      save();
+      // renderLists();
+    // } else if (e.target.nodeName === 'SPAN' && e.target.parentNode.id === list.id && e.target.contentEditable === 'inherit'|| e.target.contentEditable === 'false'){
+      //This will loop through each of the items not selected and set them to displayTasks False
+    } else{
+      list.displayTasks = false;
+      // console.log(list.name +' span not selected so dipl task set to false')
+      // toggleOff();
+    // } else if(e.target.classList.contains('selected')){
+      // console.log('diplay task should be falsy');
+      // console.log(list.name)
+      // console.log(e.target.classList)
+      // e.target.classList.remove('selected');
+      // console.log(e.target.classList)
+      // e.target.classList.add('spanClass');
+      // console.log(e.target.classList)
+      // e.target.classList.remove('selected');
+      // e.target.classList.add('spanClass');
+      save();
+    }
+    // console.log('lists rendered')
+    // renderLists();
+  // }
+
+  // for(let list of lists){
+  //   if(list.displayTasks === true){
+  //     console.log(list.name)
+  //     console.log(listItems)
+  //     // listItems.forEach(spans => console.log(spans.innerHTML))
+  //     function checkSpans(listItems) {
+  //       return listItems.find(listItems.innerHTML)
+  //     }
+  //   }else if(list.displayTasks === false){
+  //     console.log(list.name);
+  //     console.log(listItems)
+  //     listItems.forEach(span => console.log(span))
+  //   }
+  // }
+
+
+    
+
+    // if(e.target.className === 'spanClass'){
+    //   console.log(list.name)
+    // }
+  //Original:
+  // if(e.target.parentNode.displayTasks === true){
+  //   toggleOn();
+  //   save()
+  // }
+  //New TODO: This will select the list item that was already set to either displaytasks either T/F and based on that toggleOn() or toggleOff respectively, it will save it to LS.
+  // for(let list of lists){
+    if(e.target.nodeName === 'SPAN' && e.target.parentNode.id === list.id && list.displayTasks === true){
+    //   e.target.className = 'selected';
+      //Giving the selected list.name a variable so that I can pass it into the toggleOn function as a parameter, which will then be passed on to the taskCard() function as a parameter, and then used as the taskLiTitle innerText.
+      var selectedText = list.name;
+      // console.log(e.target)
+      // console.log(list.name +' span text selected, display tasks true so toggle on')
+      toggleOn(selectedText);
+      
+    //   console.log('toggle on has been called from toggler and classname should be selected')
+    //   console.log(list.name)
+    // save()
+    }
+    
+    else if(e.target.nodeName === 'SPAN' && e.target.parentNode.id === list.id && list.displayTasks === false){
+      //   e.target.className = 'selected';
+      //   console.log(e.target)
+      toggleOff();
+      // console.log(list.name +' clicked so rest of list items display tasks set to false so toggle off')
+      //   console.log('toggle on has been called from toggler and classname should be selected')
+      //   console.log(list.name)
+    }
+      save()
+  //     renderLists()
+    
+    // if(list.displayTasks === false){
+    //   e.target.className = 'spanClass'
+    // }
+    // } else {
+    //   console.log(e.target)
+    //   className = 'spanClass'
+    //   console.log('class name should be spanClass')
+    //   console.log(list.name)
+    //   toggleOff();
+    //   // save();
+    // }
+    // if(e.target.parentNode.id === list.id && list.displayTasks === true){
+    //   e.target.className = 'selected';
+    //   toggleOn();
+    //   console.log('toggle on has been called from toggler and classname should be selected')
+    //   save();
+    // } else if(e.target.parentNode.id === list.id && list.displayTasks === false){
+    //   // e.target.classList.remove('selected')
+    //   e.target.className = 'spanClass'
+    //   console.log('class name should be spanClass')
+    //   toggleOff();
+    //   save();
+    // }
+
+    //New: For span to show the display container when clicked and show the display container after edit mode not during
+  //contenteditable is default and is editable if its immediate parent is editable
+  // if(e.target.nodeName === 'SPAN' && e.target.contentEditable === 'inherit'|| e.target.contentEditable === 'false') {
+  //   // loop throught the spans, currently not doing anything
+  //   for(let list of listItems){
+  //     if(list.className = 'spanClass') {
+        // console.log('there is a selected item already');
+  //     }
+    // }
+  //   e.target.className = 'selected'
+  //   e.target.displayTasks = true;
+  //   toggleOn();
+
+
+  // }
+
+    // if(e.target.parentNode.id === list.id && e.target.nodeName === 'SPAN' && e.target.contentEditable === 'inherit'|| e.target.contentEditable === 'false') {
+    //   console.log("This is the one")
+    //   // list.displayTasks = true;
+    //   console.log(list);
+    // }
+    // console.log(list.displayTasks);
+    // save();
+    // toggleOn();
+  // };
+
+  //   if(list.completedTasks === true)
+  //   console.log("it is working for true");
+  // })
+
+  //Original
   //For span to show the display container when clicked and show the display container after edit mode not during
   //contenteditable is default and is editable if its immediate parent is editable
-  if(e.target.nodeName === 'SPAN' && e.target.contentEditable === 'inherit'|| e.target.contentEditable === 'false') {
-    //loop throught the spans
-    for(let list of listItems){
-      if(list.className = 'spanClass') {
-        // console.log('there is a selected item already');
-      }
-    }
-    e.target.className = 'selected'
+  // if(e.target.nodeName === 'SPAN' && e.target.contentEditable === 'inherit'|| e.target.contentEditable === 'false') {
+  //   // loop throught the spans, currently not doing anything
+  //   for(let list of listItems){
+  //     if(list.className = 'spanClass') {
+  //       console.log('there is a selected item already');
+  //     }
+  //   }
+    //Original: Used to turn the span into selected
+    // e.target.className = 'selected'
+
+    //New: 
+    // for(let list of lists){
+    //     console.log(e.target.list.displayTasks) 
+    //   //   //   // console.log('there is a selected item already');
+    //   //   }
+    //   // }
+    // console.log(lists);
+    // console.log(selectedListId);
+        // }
     // console.log('span was clicked by itself and container should show, class now selected');
-    toggleOn();
-  } 
-  //For Edit button to not cause a drop down 
+
+    //New
+
+  //   toggleOn();
+  // } 
+  // if(event.target.tagName === "BUTTON"){
+  //   console.log('button clicked but no action taken')
+  // }
+
+  // Original
+  // For Edit button to not cause a drop down 
   if(e.target.nodeName === 'SPAN' && e.target.contentEditable === 'true') {
     for(let list of listItems) {
-      list.className = 'spanClass'
+      // list.className = 'spanClass';
+      list.displayTasks = false;
+      save();
+      // console.log(listItems)
+      // console.log('edit button clicked, do not cause a drop down')
     }
-    // console.log(('span was clicked on edit mode do not show Cont'));
+    // console.log((list.name +' span was clicked on edit mode do not show Cont'));
     toggleOff();
   }
-  //For edit button to not coause a drop down on click of span while selecting text to edit it
-  if(e.target.style.borderStyle === 'inset') {
-    for(let list of listItems) {
-      list.className = 'spanClass'
-    }
-    // console.log('edit button was clicked do not show Cont');
+  
+//   //This stops a drop down from occurring when pressing the edit button. After edit button is clicked, placing the curser in the span text area to edit it, should not cause a dropdown. This only works if the edit button borderstyle remains as inset during edit mode.
+//   if(event.target.style.borderStyle === 'inset') {
+//     console.log(event.target)
+//     console.log('button borderstyle is inset and so toggle off')
+//     // for(let list of listItems) {
+// //       // list.className = 'spanClass'
+//       // console.log(list)
+//       // console.log(list.displayTasks)
+//       // list.displayTasks = false;
+//       // console.log(list.displayTasks)
+//       // save();
+//       // console.log('edit text entered dont cause a drop down')
+//     // }
+// //     // console.log('edit button was clicked do not show Cont');
     
-    toggleOff();
+//     toggleOff();
+    renderLists();
   }
 }
+  
+// }
+// }
 //----End of Toggler Function -------//
 
-//Allows toggler to work by calling it as an eventlistener in ul newList id
-newList.addEventListener('click', toggler, false)
+//TODO: Click event happens on the list item that is clicked. Allows toggler to work by calling it as an eventlistener in ul newList id
+// newList.addEventListener('click', toggler, false)
 
+
+// newList.addEventListener('click', toggler => {
+//   console.log(toggler.target.tagName);
+//   if(toggler.target.tagName === "BUTTON"){
+//     toggler.preventDefault();
+//     console.log("a button was clicked will not call toggler")
+//   } else {
+//     (console.log("a span was clicked, set off toggler"))
+//     toggler;
+//     toggler();
+//   }
+// }, false);
+ 
 //====================================================
 //=============Toggle-On-Off-Functions======================
 //====================================================
 let displayDiv = document.getElementById('display');
 
-function toggleOn() {
-  taskCard();
+function toggleOn(selectedText) {
+  // console.log(selectedText)
+  // renderLists()
+  // console.log('taskCard should now be called')
 //  console.log('do we enter renderTasks here');
   displayDiv.style.display = 'block';
   // console.log('toggle on');
   //scroll to bottom of page when the list item is clicked on todo list
+  taskCard(selectedText);
   window.scrollTo(0,1000);
 }
 
@@ -366,8 +658,11 @@ function createTaskList(name){
   }
 }
 
-//Build the taskCard that will be displayed on toggle if the list item is selected from the todo lists
-function taskCard(){
+//Build the taskCard that will be displayed on toggle if the list item is selected from the todo lists. I passed the selectedText from list.name as a parameter from toggler and into taskCard to be used in taskTitle element.
+function taskCard(selectedText){
+  // console.log(selectedText)
+  let valueTest = typeof selectedText;
+  // console.log(valueTest);//string
   // clearTaskElement(newTask)
   let dropDownCont = document.getElementById('display');
   const taskButton = document.createElement('button');
@@ -384,24 +679,53 @@ function taskCard(){
   taskLiTitle.class= "title";
   taskLiTitle.style.textDecoration = 'underline';
   let spans = newList.querySelectorAll("span");
+  // console.log(spans)
   // console.log(newList);
   //loops through the list items and looks at each span to see if selected, turns that span text to uppercase task title
   spans.forEach(function(span){
-    if(span.className === "selected"){
-      //grabs the text in span and makes it all uppercase
-      let spanTextNeeded = span.innerText.toUpperCase();
-      //places the text in span into the h2 element taskLiTitle
-      taskLiTitle.innerText = spanTextNeeded;
-      taskCont.appendChild(taskLiTitle);
-      // console.log(spanTextNeeded);//Text selected
-      //pulls the id of the parent list item into a variable
+    // console.log(span.innerText)
+
+    // //   // ORIGINAL:
+    // if(span.className === "selected"){
+    if(span.innerText === selectedText){
+        // console.log(span.innerText)
+          // //   // TESTING:
       idInNewList = span.parentNode.id
-      // console.log(idInNewList); //id number as text
-    } 
-  });
+      // console.log(idInNewList); //id number as text, currently last list id in LS
+      for(let list of lists) {
+      // console.log('testing the list in task Title called in taskCard function')
+      // console.log(list.name);
+        // if(list.displayTasks === true && list.id === idInNewList){
+        if(list.displayTasks === true && list.name === selectedText){
+          // console.log('testing the list in task Title called in taskCard function')
+          // console.log(list.name)//shows up as previous selection
+          // console.log(taskLiTitle.innerText)
+          // console.log('displayTask is true in TaskCard function')
+          // console.log(list.name);
+          // taskLiTitle.innerText = list.name.toUpperCase();
+          //selectedText was passed down as a parameter into the taskCard(selectedText) function
+          taskLiTitle.innerText = selectedText.toUpperCase();
+      // if((span.className === "selected listNoCrossOut")||(span.className === "selected listCrossOut")){
+      //   console.log('testing with listCrossout and listnocrossout')
+          //grabs the text in span and makes it all uppercase
+          // let spanTextNeeded = span.innerText.toUpperCase();
+          //places the text in span into the h2 element taskLiTitle
+          // taskLiTitle.innerText = spanTextNeeded;
+          // console.log(list.name + " will be added to title")
+          // console.log(taskLiTitle.innerText)
+          taskCont.appendChild(taskLiTitle);
+          // console.log('task title appended')
+          // console.log(spanTextNeeded);//Text selected
+          //pulls the id of the parent list item into a variable
+          // idInNewList = span.parentNode.id
+          // console.log(idInNewList); //id number as text
+        } 
+      }
+    // }
+  
 
   taskCont.appendChild(taskLiTitle);
-  //Add taskCont to dropDown Container
+  //Add taskCont to dropDown Container which is the div with display
   dropDownCont.appendChild(taskCont);
 
   //=======Create Task Area========//
@@ -466,9 +790,6 @@ function taskCard(){
       taskFormProcess();
       //scroll to bottom of page when enter is pressed on task form
       window.scrollTo(0,1000);
-//      let taskDivArea = document.getElementById('display');
-//      taskDivArea.scrollTop = taskDivArea.scrollHeight;
-//      console.log(taskDivArea)
     }
   })
 
@@ -476,7 +797,7 @@ function taskCard(){
   taskButton.addEventListener('click', ev5 => {
     ev5.preventDefault();
     taskFormProcess();
-    console.log(newTaskFormItem);
+    // console.log(newTaskFormItem);
     //scroll to bottom of page when button is clicked on task form
     window.scrollTo(0,1000);
  
@@ -488,44 +809,16 @@ function taskCard(){
     // console.log(newList);
     //gets value from text area in taskform
     let taskName = taskFormTxt.value;
-    // let taskFormTxt = document.getElementById('taskFormTxt').value;
-    // console.log(taskName);
-    // storeTaskName(taskName);
-    // console.log(taskFormTxt.value);
-    // console.log(spans); //Shows all spans with one that is selected as well
     //if empty return cell and user hits enter do the following after return
     if(taskName == null || taskName === '') return
     //creates a createList function with the text value as the parameter
     let task = createTaskList(taskName)
     //clears the form text input area of the text value so new text can be entered
     taskFormTxt.value = null;
-    // clearTaskElement(newTask);
-    // spans.forEach(function(span){
-    //   if(span.className === "selected"){
-    //     console.log('hello');
-    //     console.log(idInNewList);//Selected id
-
-  // } 
-    // });
-
-
-    // console.log(lists);
-    // console.log(idInNewList);
+  
     //Notes: Find out how to organize the below so it does not repeat for every list item
             //==========Keeper Area========//
 
-    // lists.forEach(list => {
-    //   // console.log(list);//{id: name of 1st list item}
-    //   console.log(lists);
-    //   console.log(list.id);// first list ID number
-    //   console.log(idInNewList);//List ID not Task ID  
-    //   console.log(spans);
-    //   console.log(newTask);
-    //   console.log('Turtle Power');
-    
-     
-      // const selectedList = lists.find(list => list.id === selectedListId)
-      // console.log(selectedList);
     for (var i =0; i < lists.length; i++)
       // console.log(lists[i].id);//works gives all id of selected list item
 
@@ -538,20 +831,16 @@ function taskCard(){
           // console.log(typedTask);//{id: "1612413073416", name: "e2r2"} task entered
           //pushes selected task to array tasks
           let selectedList = lists[i].tasks.push(typedTask);
-          // console.log(selectedList);//Ans: 1
-          // console.log(task.name);
+          
       }
-      // }
-      // console.log(task.name); //works {id: #####, name: $%$%$%$%}
-      // console.log(task.id);
+     
     
       //The task entered into the form is saved into the array of objects as a new task within the selected list item
       saveAndRender();
       renderTasks();
   };
             //=============New Test Area==============
-  // console.log(newTask);
-  // console.log(newTask.firstChild);
+
   //Stops the task list from duplicating the first task item in the UL for the task lists which has the ID newTask
   function clearTaskElement(newTask) {
     while (newTask.firstChild) {
@@ -564,13 +853,13 @@ function taskCard(){
     for (var i = 0; i < lists.length; i++){
       for(let n = 0, t = lists[i].tasks.length; n < t; n++){
         if(lists[i].tasks[n].id === deletedTaskId){
-          console.log('it works')
-          console.log(n)
-          console.log(lists[i])
-          console.log(lists[i].tasks)
-          console.log(lists[i].tasks[n])
+          // console.log('it works')
+          // console.log(n)
+          // console.log(lists[i])
+          // console.log(lists[i].tasks)
+          // console.log(lists[i].tasks[n])
           lists[i].tasks.splice([n],1);
-          console.log(lists[i])
+          // console.log(lists[i])
           break;
           save();
           renderTasks();
@@ -578,170 +867,124 @@ function taskCard(){
       }
     }
   }
-  //Create the remove button
-  // const removeTaskBtn = document.createElement('button');
-  // const editTaskButton = document.createElement('button');
-  // for (var i =0; i < lists.length; i++)
 
-  // function deletedTask() {
-  //   for(var i = 0; i < lists[i].tasks; i++){
-  //     console.log(i);
-  //   }
-  // }
-
-        //Notes: Add tasks into the ul below from the local storage so they display when the list item is selected
-
-        //==========================================
+  //==========================================
   function reviewChecks(){
       var cont = document.getElementById('newTask').children;
       console.log(cont);
   }
 
-  function renderTasks(){  
-    // var ex = document.getElementById('newTask').firstChild.innerHTML;
-    // console.log(ex);
-    //Calls the function that stops first task list item from duplicating in the displayed ul
-    clearTaskElement(newTask);
-    // for(const prop in lists){
-    //   console.log(lists[prop]);
-    //   console.log(lists.name);
 
-    // for(let i = 0, l = lists.tasks.length; i < l; i++){
-    //   let obj = lists.tasks[i];
-    //   console.log(obj.name);
-    // }
+  // console.log(idInNewList)
+  function renderTasks(){  
+    clearTaskElement(newTask);
     //Loop through list items
     for (var i =0; i < lists.length; i++){
-      if(lists[i].id === idInNewList){
-        // console.log("hello mate");
-        // console.log(lists[i]);
-        console.log(lists[i].name)//text of list item
+      // if(lists[i].id === idInNewList){
+      if(lists[i].name === selectedText){
+        console.log(lists[i].name + " has been selected during renderTasks")
+        //text of list item
         // console.log(lists[i].tasks);
 
         //Loop through each task within the list items
         for(let n = 0, t = lists[i].tasks.length; n < t; n++){
-          // console.log('hi');
           //lists all tasks entered
           var tasksInLists = lists[i].tasks[n];
           var arrayOfTasks = lists[i].tasks;
           var listName = lists[i].name;
           var listTask= lists[i].completedTasks;
           var listId = lists[i].id;
-//          console.log(Array.isArray(arrayOfTasks));//true
-//          console.log(tasksInLists);
-//          console.log(tasksInLists.id);
-//          console.log(arrayOfTasks);
-//          console.log(n)
-//          console.log(Array.isArray(tasksInLists));//false
-//          console.log(typeof(tasksInLists));//object
-//          console.log(tasksInLists);//{id: "1621009449631", name: "Inner22", complete: false}
-          // console.log(tasksInLists.name);
-          // console.log(n);
-          // console.log(tasksInLists.id);
-          // console.log(tasksInLists.parentNode);
-          // console.log(newTask);
-//          console.log(lists[i].tasks[n].id);// #id of task
-//          console.log(lists[i].tasks[n].complete);
-          
-                
-                
-          // tasksInLists.forEach(List => {tasksIn
-          //Give the task id a variable name
-          // let selectedTaskId = tasksInLists.id;
-          // console.log(selectedTaskId);
-          //tasksInLists.forEach(function(taskInList){
-          //console.log('yo')
-          //});
-          
-          // tasksInLists.forEach(tasksInList => {
 
-          // if(selectedTaskId = selectedList.parentNode.id){
+          console.log(listTask)
 
-            // }
-            // console.log(lists);
-            // console.log(newTask);
-            // clearTaskElement(newTask);
-            // console.log(task.id);
-            // console.log(idInNewList);
-            //Looping through each list item
-            // lists.forEach(list => {
+          // console.log(listName)
+          console.log(lists[i].tasks[n])
+
+
+          //=================================================================
+          //=========================Functions===============================
+          //Mostly used by Checkbox event but made accessible to other areas of renderTasks, specifically to removeTaskBtn event so if a checkbox is checked off on the only task remaining and that task is deleted it can remove the linethrough from the list item once the list has no more tasks.
+
+          //TODO: (Note: Changes LS property t/f) Function that is tripped when all the checkboxes are checked in the tasks items. Trying to use this function to mark the list property completedTasks in LS as true and also set the list span to listCrossOut so it has a linethrough
+          const engageListCrossOut = ()=> {
+            // console.log('function engageListCrossOut was tripped')
+            //Todo: find specific list item, these variables were declared earlier
+            // console.log(listName)
+            // console.log(listTask)
+            // console.log(lists)
+            // console.log(listId)
+            // console.log(newList)
+            // console.log(typeof(newList))
+            listThings = newList.querySelectorAll('span')
+            // console.log(listThings)
+            // console.log(arrayOfTasks)
+            // console.log(idInNewList)
+            //List item related to tasks that are all checked off has completedTasks set to true and saved in LS
+            for(let listSelection of lists){
+        //                  console.log(listSelection);
+              // console.log(listSelection.completedTasks);
+              // console.log(listSelection.id);
+              if(listSelection.id === listId){
+                // console.log("yes trying to find only list item with this id and setting LS completedTasks to TRUE")
+                //TODO:Sets the Local Storage to True
+                listSelection.completedTasks = true;
+                // console.log(listSelection);
+              } 
+            }
+          }
+          //TODO:(Note: Changes LS property t/f) Does the opposite of above sets LS list property completedTasks as false
+          const engageListNoCrossOut = ()=> {
+            // console.log('function engageListNoCrossOut was tripped')
+            for(let listSelection of lists){
+              if(listSelection.id === listId){
+                listSelection.completedTasks = false;
+                // console.log(listSelection);
+              }
+            }
+          }
+          //=================================================================
+          //=================================================================
+
+
+
+
+
+
             //create li
             const taskListElement = document.createElement('li');
             //put the id from the object into the task id being rendered
             taskListElement.id = tasksInLists.id;
-          
-            //add a span element
-            // TaskiSpan = document.createElement('SPAN');
-            // //add a class to the span exlement
-            // liSpan.classList.add('spanClass');
-            // //text inside the span
-            // liSpan.innerText = list.name;
-            // //append span to li
-            // listElement.appendChild(liSpan);
-            // if(list.id === selectedListId) {
-            //   listElement.classList.add('selected');
-            //Create task li
-            // taskLi = document.createElement('li');
-            //Create task id
-            // taskLi.id = list.id
-            // console.log(list.id);
-            //Create task Span
             taskLiSpan = document.createElement('SPAN');
-//            let completeFinder = arrayOfTasks.find(taskInLi => {
-//                if(taskInLi.complete === true){
-//                  taskLiSpan.classList = 'crossOut';
-//                  console.log(taskInLi.name);
-//                } else if(taskInLi.complete === false){
-//                  taskLiSpan.classList = 'noCrossOut';
-//                  console.log(taskInLi.name);
-//                }
-//              })
-//            arrayOfTasks.forEach(taskForChecks => {
-//              console.log(taskForChecks);
-//              if(taskForChecks.id === tasksInLists.id && taskForChecks.complete === true){
-//                taskLiSpan.classList = 'crossOut';
-//                console.log(taskForChecks.name);
-//                console.log(taskForChecks.complete);
-//              } else if(taskForChecks.complete === false){
-//                  taskLiSpan.classList = 'noCrossOut';
-//                  console.log(taskForChecks.name);
-//                  console.log(taskForChecks.complete);
-//              }
-//            });
+
             //Looks through each task and checks the LS. If it is not checked off it should be set as complete === false so the class list should be 'noCrossOut' making the task not have a line-through or cross out. This checks every task.
             if(tasksInLists.complete === false){
               taskLiSpan.classList = 'noCrossOut';
             } else if (tasksInLists.complete === true){
               taskLiSpan.classList = 'crossOut';
             }
-//            //add classname to task span
-//            taskLiSpan.classList = 'noCrossOut'  
-//            taskLiSpan.classList = 'noCrossOut';
-//            console.log(tasksInLists.complete)
-          
-//            if(tasksInLists.complete = false){
-//              console.log("it is set to false")
-////              taskLiSpan.classList = 'noCrossOut';
-//            } else if (tasksInLists.complete = true){
-//              console.log("it is set to true")
-////              taskLiSpan.classList = 'crossOut';
-//            }
+  //            //add classname to task span
+  //            taskLiSpan.classList = 'noCrossOut'  
+  //            taskLiSpan.classList = 'noCrossOut';
+  //            console.log(tasksInLists.complete)
+            
+  //            if(tasksInLists.complete = false){
+  //              console.log("it is set to false")
+  ////              taskLiSpan.classList = 'noCrossOut';
+  //            } else if (tasksInLists.complete = true){
+  //              console.log("it is set to true")
+  ////              taskLiSpan.classList = 'crossOut';
+  //            }
             let task = tasksInLists.name        
+            // console.log(task)
             //text inside the span
             taskLiSpan.innerText = tasksInLists.name;
             //append span to lis
             taskListElement.appendChild(taskLiSpan);
             //HAVE TO LOOP THROUGH LIST ITEMS THEN GO THROUGH TASK
             //add form txt to span
-            // console.log(list.tasks);// works pulls all tasks
-            // taskLiSpan.innerText = lists.tasks.name;//Udefined
-            // console.log(taskName.name)//Undefined
           
             //clear text area
             const clearTaskTxt = document.getElementById('taskFormTxt');
-            // clearTaskTxt.value="";
-            // //Create the remove button
-            // const removeTaskBtn = document.createElement('button');
             const removeTaskBtn = document.createElement('button');
             removeTaskBtn.classList = 'removeList';
             removeTaskBtn.innerText = 'x';
@@ -749,7 +992,7 @@ function taskCard(){
             //Create the edit button 
             const editTaskButton = document.createElement('button');
             editTaskButton.id = 'editList';
-            editTaskButton.innerText = "Edit";
+            editTaskButton.innerText = 'Edit';
             taskListElement.appendChild(editTaskButton);
             //Create the checkbox
             const checkBox = document.createElement('input');
@@ -757,129 +1000,68 @@ function taskCard(){
             checkBox.setAttribute('type', 'checkbox');
             checkBox.checked = tasksInLists.complete
             taskListElement.appendChild(checkBox);
-        
-            // })
-  
-
-            //==========================================
 
 
-            //Below is commented out for testing purpose
-            //Create task li
-            // taskLi = document.createElement('li');
-            // //Create task id
-            // // taskLi.id = list.id
-            // // console.log(list.id);
-            // //Create task Span
-            // taskLiSpan = document.createElement('SPAN');
-            // //add classname to task span
-            // taskLiSpan.classList = 'taskSpanClass'  
-            // //append span to lis
-            // taskLi.appendChild(taskLiSpan);
-            // //add form txt to span
-            // taskLiSpan.innerText = taskFormTxt;
-            // console.log(taskFormTxt)
-            // //append li to ul
-            // taskUl.appendChild(taskLi);
-            // //clear text area
-            // const clearTaskTxt = document.getElementById('taskFormTxt');
-            // clearTaskTxt.value="";
-            // //Create the remove button
-            // const removeTaskBtn = document.createElement('button');
-            // removeTaskBtn.classList = 'removeList';
-            // removeTaskBtn.innerText = 'x';
-            // taskLi.appendChild(removeTaskBtn);  
-
-            //// createTaskList(taskFormTxt);
-            //// console.log(taskFormTxt);
-            //// saveAndRender();
             //--inner event function -- remove task item with x button
             removeTaskBtn.addEventListener('click', ev5 => {
-              ev5.target.parentNode.remove();
+              // ev5.target.parentNode.remove();
               //give a variable name to the task id that will be deleted
               deletedTaskId = ev5.target.parentNode.id;
-              console.log(deletedTaskId);
-              console.log('remove button clicked')
-//              console.log(tasksInLists.id)//gives last id in tasks
+              // console.log(deletedTaskId);
+              // console.log('remove button clicked')
+              //console.log(tasksInLists.id)//gives last id in tasks
               
-              console.log(arrayOfTasks);
-//              console.log(arrayOfTasks.id)
-//              let taskObjIds = arrayOfTasks.id;
-//                console.log(taskObjIds);
-//                let idInTaskObjDelete = taskObjIds.filter(checkId)
-//                function checkId(idTask) {
-//                  return idTask === deletedTaskId;
-//                }
-//                console.log(taskObjIds);
-//              
-////          //for loop through each task array with the purpose of finding the id in the array    
+              // console.log(arrayOfTasks);             
+              //////for loop through each task array with the purpose of finding the id in the array    
+              // let counter = 0;
               for(var t = 0; t < arrayOfTasks.length; t++){
-//                console.log(arrayOfTasks[t]);
-//                console.log(arrayOfTasks[t].id);
-//                if(arrayOfTasks[t].id === deletedTaskId)
-//                  console.log(arrayOfTasks[t]);
-//                  break;
                 let taskObjIds = arrayOfTasks[t].id;
-//                console.log(taskObjIds);
+                console.log(arrayOfTasks[t].name)
+                // if(arrayOfTasks[t].tasks === []){
+                //   console.log('it is empty')
+                // }
+                //console.log(taskObjIds);
                 //filter through each task array with function checkId to pull the idTask.id if it matches the evt.parent.id deletedTaskId then splice the task in the array from the object stored in LS
                 let taskToDelete = arrayOfTasks.filter(checkId)
                 function checkId(idTask){
-//                  console.log(idTask.id);
+                  //console.log(idTask.id);
                   if(idTask.id === deletedTaskId){
-                    console.log(idTask.id)
-                    console.log(idTask.name)
-                    console.log(n)
-                    console.log(arrayOfTasks[n]);
+                    // console.log(lists[i].name);
+                    console.log(arrayOfTasks[t].complete)
+                    arrayOfTasks[t].complete = false;
+                    console.log(arrayOfTasks[t].complete)
+                    console.log(lists)
                     arrayOfTasks.splice([n],1)
-//                    break;
-                    save();
-                    renderTasks();
-//                    console.log(lists[i])
-//                    console.log(lists[i].tasks)
-//                    console.log(lists[i].tasks[n])
-//                    lists[i].tasks.splice([n],1);
+                    //break;
+                    // save();
+                    // renderTasks();
                   }
-//                  return idTask.id === deletedTaskId
                 }
-                
-//                console.log(taskToDelete);
-//                console.log(taskToDelete.id);
+                // if(!arrayOfTasks[t].tasks){
+                //   console.log('it is empty')
+                //   }
+                // if(arrayOfTasks[t].tasks === '0') 
+                // counter++;
+                // console.log(counter);
+                console.log(arrayOfTasks.length)
+                if(arrayOfTasks.length == "0"){
+                  engageListNoCrossOut();
+                  // console.log('find list item change to completedtasks false')
+                  // console.log(lists[i].name)
+                  // console.log(listTask)
+                  // listTask = 'false';
+                  // console.log(listTask)
+                }
+                // save();
+                // renderTasks();
                 break;
-//                save();
-//                renderTasks();
-//                let idInTaskObjDelete = taskObjIds.filter(checkId)
-//                function checkId(idTask) {
-//                  return idTask === deletedTaskId;
-//                }
-//                console.log(taskObjIds);
+                // console.log(arrayOfTasks[t].tasks)
               }
+              ev5.target.parentNode.remove();
               
-              //should turn tasksInLists.name into a variable like task
-//              if(tasksInLists.id === deletedTaskId){
-//                console.log('it works')
-//                console.log(n)
-//                console.log(lists[i])
-////                console.log(lists[i].tasks)
-//                console.log(lists[i].tasks[n])
-//                arrayOfTasks.splice([n],1);
-//              }
               saveAndRender();
-//              deletedTask(task);
+  //              deletedTask(task);
             });
-
-            //ul append li 
-            // taskUl.appendChild(taskList);
-            // //add edit button, button to be pressed when editing
-            // const editTaskButton = document.createElement('button');
-            // editTaskButton.classList = 'editList';
-            // editTaskButton.innerText = 'Edit';
-            // //add edit button to li
-            // taskLi.appendChild(editTaskButton);
-            // //add checkbox
-            // const checkBox = document.createElement('input');
-            // checkBox.classList ='complete';
-            // checkBox.setAttribute('type', 'checkbox');
-            // taskLi.appendChild(checkBox);
 
             //Inner event function -- text entered in span within list to be editable
             editTaskButton.addEventListener('click', ev6 => {
@@ -888,15 +1070,51 @@ function taskCard(){
               //edit text is set to focus so you can see the box glow when in edit mode
               editTaskLiText.focus();
               editTaskButton.style.borderStyle = 'inset';
+              console.log(editTaskLiText)
+              
 
               //Inner of Inner event function -- able to edit then press enter to no longer focus off of enter keydown
               editTaskLiText.addEventListener ("keydown", ev7 => {
                 if(ev7.keyCode === 13) {
                   ev7.preventDefault();
+                  console.log(ev7)
+                  console.log(ev7.target.parentNode)
+                  console.log(ev7.target.parentNode.id)
+                  let taskLiId = ev7.target.parentNode.id;
+
+                  console.log(ev7.target.parentNode.firstChild)
+
                   //removes focus on list item
                   editTaskLiText.contentEditable = false;
                   //removes borderstyle to show released edit button
                   editTaskButton.style.borderStyle = 'none'; 
+                  let newTaskLiText = editTaskLiText.innerText;
+                  console.log(newTaskLiText);
+                  // console.log(lists[i].name);
+                  // lists[i].name = newTaskLiText;
+                  for(var v = 0; v < arrayOfTasks.length; v++){
+                    console.log(arrayOfTasks[v].id)
+                    let taskObjNames = arrayOfTasks[v].name;
+                    if(taskLiId === arrayOfTasks[v].id){
+                    console.log(arrayOfTasks.id)
+                     console.log(taskObjNames);
+                    //  taskObjNames = newTaskLiText;
+                    arrayOfTasks[v].name = newTaskLiText;
+                     console.log(taskObjNames)
+                    //filter through each task array with function checkId to pull the idTask.id if it matches the evt.parent.id deletedTaskId then splice the task in the array from the object stored in LS
+                    // let taskToEdit = arrayOfTasks.filter(checkTaskName)
+      //               function checkTaskName(namedTask){
+      // //                  console.log(idTask.id);
+      //                 // if(namedTask.name === deletedTaskId){
+                      
+                        
+      // //                    break;
+                      save();
+      //                  renderTasks();
+                     }
+                   }
+                  // save()
+
                 }
               })
             })                   
@@ -905,272 +1123,126 @@ function taskCard(){
             checkBox.addEventListener('click', ev7 => {
               //Look at the parent task list item where you clicked the checkbox and look at the first child which is the span which has the cross out class and the name of the task as text. Other children are the other buttons such as remove and edit and check of course
               let editTaskOnCheck = ev7.target.parentNode.firstChild;
-              console.log(editTaskOnCheck);
-              // var innerTaskList = newTask.querySelectorAll('li');
-              // if(checkBox.checked === true) {
-              //   console.log(editTaskOnCheck);
-              //   editTaskOnCheck.style.textDecoration = 'line-through';
-
-              // } else{
-              //   editTaskOnCheck.style.textDecoration = 'none'
-              //   console.log('testing checkbox if checked not true');
-              // }
-              // console.log(ev7.target.parentNode.id);
-              //ID of the task list item
-              let thisTaskId = ev7.target.parentNode.id;
-              console.log(thisTaskId);
-              //id# of each task
-              // console.log(ev7.target);
-              // console.log(checkBox);
-              // console.log(tasksInLists);
-              // let findTask = arrayOfTasks.find(taskSearch => innerTaskList.id === ev7.target.id)
-              // console.log(findTask);
-              // tasksInLists.isArray;
+              // console.log(editTaskOnCheck);
             
+              let thisTaskId = ev7.target.parentNode.id;
+              // console.log(thisTaskId);
              
-              
-
-              //going through the <li> innerTaskList, the innerList is a <li> item within innerTaskList
-              // innerTaskList.forEach(innerList => {
-              //   console.log(innerList);
-              //   let testing = typeof(innerList)
-              //   console.log(testing);
-
-
-              //   // console.log(innerList.id);//uses last id of tasks
-              //   // console.log(innerList.complete);//undefined
-              //   if(innerList.id === thisTaskId && checkBox.checked === false){
-              //     // console.log("hleoo");
-              //     console.log(innerList.id);
-
-              // let taskFinder = function(tasking){
-              //   for(var key in tasking){
-              //     if(tasking.hasOwnProperty(key)){
-              //       console.log(tasking[key]);
-              //     }
-              //   }
-              //   return tasking;
-              // }
-              
-              //Create functions to cross out and uncross the tasks with linethrough, these functions will be called from the taskFinder below
-              
+              //TODO: Function sets attribute noCrossOut as a class when called and removes crossOut class
               const disengageCrossOut = ()=> {
-                console.log('function disnengageCrossOut was tripped')
+                // console.log('function disnengageCrossOut was tripped')
                 editTaskOnCheck.removeAttribute('class', 'crossOut');
                 editTaskOnCheck.setAttribute('class', 'noCrossOut');
 //                tasksInLists.complete = false;
-                console.log(tasksInLists)
+                // console.log(tasksInLists)
 //                saveAndRender();
 //                renderTasks();
               }
-              
+              //TODO: Note(Changes Classes) Function sets attribute CrossOut as a class when called and removes noCrossOut class
               const engageCrossOut = ()=> {
-                console.log('function engageCrossOut was tripped')
+                // console.log('function engageCrossOut was tripped')
                 editTaskOnCheck.removeAttribute('class', 'noCrossOut');
                 editTaskOnCheck.setAttribute('class', 'crossOut');
-                console.log(tasksInLists.complete)
+                // console.log(tasksInLists.complete)
 //                tasksInLists.complete = "true"
-                console.log(tasksInLists)
+                // console.log(tasksInLists)
 //                saveAndRender();
 //                renderTasks();
               }
               
-//              engageCrossOut();
-              //use find to look through the array and find the object with the matching ID.. We need to then change the objects so that it is checkmarked and also saved to LS
-//              let taskFinder = arrayOfTasks.find(taskInLi => { if(taskInLi.id === thisTaskId && tasksInLists.complete === false && editTaskOnCheck){
-////                  console.log(editTaskOnCheck)
-//                  console.log('it is not checked already so now it is being set to checked');
-//                  engageCrossOut();
-//                
-//                } else if(taskInLi.id === thisTaskId && tasksInLists.complete === true) {
-////              let taskFinder = arrayOfTasks.find(taskInLi => {if(tasksInLists.complete === true) {
-////                console.log(editTaskOnCheck)
-//                console.log('it is checked already so now it is being set to unchecked');
-//                disengageCrossOut();
-////                tasksInLists.complete = false;
-////                saveAndRender();
-//////                renderTasks();
-////                  tasksInLists.complete = true;
-////                  saveAndRender();
-//////                  renderTasks();
-////                  console.log(editTaskOnCheck);
-//                }
-////                console.log(tasksInLists);
-//              })
-              
+
+              //TODO: Note(Changes Classes) Loops through tasks, then finds matching id of selected checkbox event and task, also checks if it has a class noCrossOut or crossOut. Depending on that calls function engageCrossOut() or disengageCrossOut() and also stores the change in LS as complete T/F
               let taskFinder = arrayOfTasks.find(taskInLi => {
                 if(taskInLi.id === thisTaskId && editTaskOnCheck.classList.contains("noCrossOut")){
-                  console.log("check it")
+                  // console.log("check it")
                   engageCrossOut();
                   taskInLi.complete = true;
 //                  saveAndRender();
                 } else if(taskInLi.id === thisTaskId && editTaskOnCheck.classList.contains("crossOut")){
-                  console.log("uncheck it")
+                  // console.log("uncheck it")
                   disengageCrossOut();
                   taskInLi.complete = false;
 //                  saveAndRender();
                 }
               })
-              console.log(editTaskOnCheck);
+              // console.log(editTaskOnCheck);
 //              console.log(taskFinder);
-              console.log(tasksInLists);
+              // console.log(tasksInLists);
               // console.log(taskInLi);
-              console.log(arrayOfTasks);
+              // console.log(arrayOfTasks);
               
-//              
-//              let taskCompleteChecker = arrayOfTasks.forEach(innerCheck =>{
-//                console.log(innerCheck);
-//              })
               
-              //function that is tripped when all the checkboxes are checked in the tasks items. Trying to use this function to mark tasksCompleted in LS as true and also set the span to ListCrossOut so it has a linethrough
-              const engageListCrossOut = ()=> {
-                console.log('function engageListCrossOut was tripped')
-                //Todo: find specific list item, these variables were declared earlier
-                console.log(listName)
-                console.log(listTask)
-                console.log(lists)
-                console.log(listId)
-                console.log(newList)
-                console.log(typeof(newList))
-                listThings = newList.querySelectorAll('span')
-                console.log(listThings)
-                console.log(arrayOfTasks)
-                console.log(idInNewList)
-                //List item related to tasks that are all checked off has completedTasks set to true and saved in LS
-                for(let listSelection of lists){
-//                  console.log(listSelection);
-                  console.log(listSelection.completedTasks);
-                  console.log(listSelection.id);
-                  if(listSelection.id === listId){
-                    console.log("yes trying to find only list item with this id and setting LS completedTasks to TRUE")
-                    //TODO:Sets the Local Storage to True
-                    listSelection.completedTasks = true;
-                    console.log(listSelection);
-                  }
-                  
-                 
-                  
-                }
-                
-//                for(let listSelection of listThings){
-//                  if(listSelection.className = 'spanClass') {
-//                    console.log('hell yeah')
-//                    if(listSelection.id = listId) {
-//                      console.log('id matches')
-//                      console.log(listId)
-//                      console.log(newList);
-//                      console.log(lists.name)
-//                      for(var i =0; i < lists.length; i++) {
-//                        if(lists[i].id === listSelection.id)
-//                          console.log('works again')
-//                          console.log(lists[i].name)
-//                          lists[i].completedTasks = true;
-//                          console.log(lists[i].completedTasks);
-//                        
-//                      }
-//                    }
-//                  }
-//                }
-                
-//                editTaskOnCheck.removeAttribute('class', 'ListNoCrossOut');
-//                editTaskOnCheck.setAttribute('class', 'ListCrossOut');
-              }
-
-              const engageListNoCrossOut = ()=> {
-                console.log('function engageListNoCrossOut was tripped')
-                for(let listSelection of lists){
-                  if(listSelection.id === listId){
-                    listSelection.completedTasks = false;
-                    console.log(listSelection);
-                  }
-                }
-              }
+//               //TODO: (Note: Changes LS property t/f) Function that is tripped when all the checkboxes are checked in the tasks items. Trying to use this function to mark the list property completedTasks in LS as true and also set the list span to listCrossOut so it has a linethrough
+//               const engageListCrossOut = ()=> {
+//                 // console.log('function engageListCrossOut was tripped')
+//                 //Todo: find specific list item, these variables were declared earlier
+//                 // console.log(listName)
+//                 // console.log(listTask)
+//                 // console.log(lists)
+//                 // console.log(listId)
+//                 // console.log(newList)
+//                 // console.log(typeof(newList))
+//                 listThings = newList.querySelectorAll('span')
+//                 // console.log(listThings)
+//                 // console.log(arrayOfTasks)
+//                 // console.log(idInNewList)
+//                 //List item related to tasks that are all checked off has completedTasks set to true and saved in LS
+//                 for(let listSelection of lists){
+// //                  console.log(listSelection);
+//                   // console.log(listSelection.completedTasks);
+//                   // console.log(listSelection.id);
+//                   if(listSelection.id === listId){
+//                     // console.log("yes trying to find only list item with this id and setting LS completedTasks to TRUE")
+//                     //TODO:Sets the Local Storage to True
+//                     listSelection.completedTasks = true;
+//                     // console.log(listSelection);
+//                   } 
+//                 }
+//               }
+//               //TODO:(Note: Changes LS property t/f) Does the opposite of above sets LS list property completedTasks as false
+//               const engageListNoCrossOut = ()=> {
+//                 // console.log('function engageListNoCrossOut was tripped')
+//                 for(let listSelection of lists){
+//                   if(listSelection.id === listId){
+//                     listSelection.completedTasks = false;
+//                     // console.log(listSelection);
+//                   }
+//                 }
+//               }
               
               
               
               
-              //checks if every check box in every task item is checked and therefore the complete is set to true. The every() method returns true if all elements in an array pass a test, provided as an arrow function below, Cheching if taskInLi is all complete === true.
+              //TODO: checks if every check box in every task item is checked and therefore the complete is set to true. The every() method returns true if all elements in an array pass a test, provided as an arrow function below, Cheching if taskInLi is all complete === true.
               let taskCompleteChecker = arrayOfTasks.every(taskInLi =>
                 taskInLi.complete === true);
 
-              console.log(taskCompleteChecker)
-
+              // console.log(taskCompleteChecker)
+              //TODO: If statement calls the functions that will store the outcome in LS, either true or false, which will in turn put a linethrough through the parent list item
               if(taskCompleteChecker === false){
                 engageListNoCrossOut();
-                console.log("hello it is false")
+                // console.log("hello it is false")
               } else if(taskCompleteChecker === true){
                 engageListCrossOut();
-                console.log("hello it is true")
+                // console.log("hello it is true")
               }            
 
-
-              
-              
-              // if(taskCompleteChecker === true){
-              //   console.log('everycheck box in tasks is complete so set off engageListCrossOut Function')
-              //   engageListCrossOut();
-              // } else if {
-              //   taskInLi.complete === false)
-              //   console.log('Not all checkboxes are checked so engageListNoCrossOut function')
-              //   engageListNoCrossOut();
-              // }
-              // tasksInLists.filter (innerTasks => {
-              // // tasksInLists.forEach(innerTasks => {
-              //   // console.log(innerTasks);
-              //   if(innerTasks === thisTaskId && checkBox.checked === false){
-              
-              //     console.log('it is checked already so uncheck mark it');
-              //     editTaskOnCheck.style.textDecoration = 'none';
-              //     // checkBox.checked = false;
-              //     tasksInLists.complete = false;//works but always changes the last complete only
-              //     // innerList.complete = false;
-              //     // console.log(tasksInLists);
-              //     } else if(innerList.id === thisTaskId && checkBox.checked === true){
-              //         console.log(innerList.id);
-              //         console.log('it is not checked already so check mark it');
-              //         editTaskOnCheck.style.textDecoration = 'line-through';
-              //         // checkBox.checked = true;
-                      
-              //         tasksInLists.complete = true;
-              //         // innerList.complete = true;
-              //         console.log(tasksInLists);
-                      
-              //       // }
-              //     }
-              //     saveAndRender()
-              //     renderTasks()
-              //   })    
-                
-             
-              //adding the checkbox marked off as true to the object of arrays and specifically to the task array tasksInLists.complete
-              // tasksInLists.complete = ev7.target.checked
-              // if(checkBox.checked === false){
-              //   console.log('not checked');
-              // } else{
-              //   console.log('it is checked');
-              //   editTaskOnCheck.style.textDecoration = 'line-through'
-              // }
-              //saving this to LS so it stays in memory and does not refresh with checkbox as empty
-              // saveAndRender()
               reviewChecks();
               saveAndRender();
-//              renderTasks();
+              //renderTasks();
             })
-          
-            console.log("hello I just did a clone to another computer and am testing it")
-            // console.log(lists);
-            //append li to ul
             taskUl.appendChild(taskListElement);
-           
-          // }
+            
+          }
         }
       }
- 
     }
   }
-    // }); 
-  // })
+  })
 }
+  
+
+
 
   //Note 11-17
   //Make font bigger and text areas etc

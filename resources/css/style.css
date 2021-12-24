@@ -7,10 +7,10 @@ HEX: #b2c2bf
 HEX: #c0ded9
 
 HEX: #3b3a30 */
-html {
-  /* overflow-y: scroll; 
-  overflow-x:hidden; */
-}
+/* html {
+  overflow-y: scroll;
+  overflow-x:hidden; 
+ }  */
 
 body {
   /* font-family: helvetica, arial, sans-serif;
@@ -28,9 +28,8 @@ h1 {
   font-style: italic;
   color: #3b3a30;
   text-align: center;
-  font-size: 280%; 
-  -webkit-text-decoration: ; 
-  text-decoration: ;
+  font-size: 280%;
+
 }
 
 .container-time{
@@ -80,7 +79,6 @@ ul {
 }
 
 #todoForm {
-  /* background-color: red; */
   text-align: center;
   /* position: relative; */
   margin: 0px;
@@ -120,6 +118,11 @@ input[type=text] {
   position: relative;
   bottom: 8px;
   border-radius: 5px;
+  border-width: 1px;
+ 
+}
+#editList:active, .editList:active, #listAddButton:active, #taskAddButton:active, #removeList:active, .removeList:active {
+  box-shadow: inset 0px 0px 15px #c1c1c1;
 }
 
 input[type=checkbox] {
@@ -147,3 +150,22 @@ input[type=checkbox] {
 .noCrossOut, .listNoCrossOut {
   text-decoration: none;
 }
+
+/* a:focus, a:active {
+  color:red;
+} */
+
+/* .spanClass:focus {
+  background: yellow;
+  color: red;
+}
+
+.selected:focus {
+  background: yellow;
+  color: red;
+} */
+/* .focus-visible-only:focus-visible {
+  outline: 4px dashed darkorange;
+} */
+
+

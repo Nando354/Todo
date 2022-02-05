@@ -11,30 +11,43 @@ HEX: #3b3a30 */
   overflow-y: scroll;
   overflow-x:hidden; 
  }  */
+html {
+  overflow-x: hidden;
+  width: 100%;
+  
+}
 
 body {
   /* font-family: helvetica, arial, sans-serif;
   margin: 2em; */
-  position: absolute;
+  /* position: absolute; */
+  /* position: relative; */
   /* overflow-y: scroll;  */
+  background-color: #b2c2bf;
   font-family: 'Quicksand', sans-serif;
   font-weight: 450;
   /* font-weight: normal; */
-  margin: 2em;
   color: #3b3a30;
+  min-height: 100vh;
+  /* background-color:#b2c2bf; */
+  overflow-x: hidden;
+  margin: 0px;
+  width: 100%;
+ 
 }
 
 h1 {
   font-style: italic;
   color: #3b3a30;
   text-align: center;
-  font-size: 280%;
+  font-size: 300%;
 
 }
 
 .container-time{
   background-color:#eaece5;
   height: 100px;
+  padding: 2% 0% 2% 0%;
   /* border-top-left-radius: 25%;
   border-top-right-radius: 25%; */
 }
@@ -44,55 +57,167 @@ h1 {
   /* border: solid; */
   width: auto;
   height: auto;
-  display: flexbox;
-  padding: 20px;
   /* font-size: 120%; */
 }
-/*
-.display{
-  overflow: scroll;
-}
-*/
+
+
+
 
 .mtnImg {
-  height: 300px;
+  height: 20%;
   width: 100%;
 }
 
 .container1 {
  background-color: #b2c2bf;
+ flex-direction: column;
+ align-content: center;
+ justify-content: center;
+ flex-wrap: wrap;
+ padding: 0% 0% 2% 0%;
+ /* margin: 20px; */
  /* height: 100px; */
 }
+.container2 h2 {
+  font-size: 155%;
+  font-weight: bold;
 
+}
 .container2 {
   background-color: #c0ded9;
   font-size: 250%;
   text-align: center;
+  flex-direction: column;
+  align-content: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  padding: 2% 0% 2% 0%;
+  /* margin: 20px; */
+  
+}
+
+#newList {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  /* flex-wrap: wrap; */
+  display: grid;
+  grid-template-columns: minmax(300px, 1fr);
+  justify-items: center;
+  /* align-self: end; */
+  /* justify-content: center; */
+  /* word-wrap: break-word;  */
+  word-break: break-word;
+  word-break: break-all;
+  /* grid-gap: 0px; */
+  padding: 0px;
+  margin: 0px;
+}
+
+#newTask {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  /* flex-wrap: wrap; */
+  display: grid;
+  grid-template-columns: minmax(300px, 1fr);
+  justify-items: center;
+  /* align-self: end; */
+  /* justify-content: center; */
+  /* word-wrap: break-word;  */
+  word-break: break-word;
+  word-break: break-all;
+  /* grid-gap: 0px; */
+  padding: 2% 0% 2% 0%;
+  /*task list gap*/
+  row-gap: 25px;
 }
 
 .container3 {
-  background-color: #c0ded9
+  background-color: #c0ded9;
+  /* padding: 20px 20px 40px 20px; */
+  /* align-items: center; */
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  padding: 1% 0% 5% 0%;
+
+  /* margin: 20px; */
+}
+
+#listFormTxt, #taskFormTxt{
+  margin: 10px;
 }
 
 ul {
   list-style-type: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  /*list gap*/
+  display:grid;
+  grid-template-columns: minmax(300px, 1fr);
+  justify-items: center;
+  word-break: break-word;
+  word-break: break-all;
+  /* grid-gap: 0px; */
+  padding: 2% 0% 2% 0%;
+  /*task list gap*/
+  row-gap: 25px;
+  /* justify-content: space-around; */
+  flex-wrap: wrap;
+  /* overflow-wrap: break-word; */
+}
+
+li {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  /* align-content: space-between; */
+  margin: .5%;
+  /* inline-size: 150px; */
+  /* overflow-wrap: break-word; */
+  
+ 
 }
 
 #todoForm {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
   text-align: center;
-  /* position: relative; */
-  margin: 0px;
-  padding: 0px;
-  /* font-size: 36px; */
+  align-items: center;
+  justify-content: center;
+  align-content: space-between;
+  padding: 5px; /*prevents extra padding*/
+  gap: 5px;
+}
+
+#taskForm {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  align-content: space-between;
+  gap: 5px;
 }
 
 textarea { 
-  width: 400px;
+  /* width: 400px; */
   border-radius: 25px;
-  font-size: 25px;
-  height: 35px;
+  font-size: 1.5rem;
+  height: 2.2rem;
   text-align: center;
-  margin-bottom: -8px;
+  /* margin-bottom: -8px; */
 }
 
 input[type=text] {
@@ -103,53 +228,106 @@ input[type=text] {
 .container4 {
   background-color: #eaece5;
 }
-
+#taskContainer h2 {
+  font-size: 270%;
+}
+#taskContainer li {
+  font-size: 240%;
+}
 #taskContainer {
-  background-color: #b2c2bf;
-  font-size: 200%;
+  background-color: #b2c2bf;;
   text-align: center;
+  flex-direction: column;
+  align-content: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  padding: 2% 0 10% 0;
+  margin: 20px;
+  row-gap: 20px;
 }
 
 #removeList, .removeList, #editList, .editList, #listAddButton, #taskAddButton{
-  width: 35px;
-  height: 35px;
+  width: 45px;
+  height: 45px;
   /* color: #3b3a30; */
   margin-left: 10px; 
-  position: relative;
+  /* position: relative; */
+  /* position: relative; */
   bottom: 8px;
   border-radius: 5px;
   border-width: 1px;
- 
+  font-size: 52%;
+  padding: 0px;
 }
+
+#todoForm #listAddButton {
+  font-size: 150%;
+}
+
+#taskForm #taskAddButton {
+  font-size: 150%;
+}
+
 #editList:active, .editList:active, #listAddButton:active, #taskAddButton:active, #removeList:active, .removeList:active {
-  box-shadow: inset 0px 0px 15px #c1c1c1;
+  box-shadow: inset 0px 0px 20px #c1c1c1;
+  color: blue;
 }
 
 input[type=checkbox] {
-  width: 35px;
-  height: 35px;
-  margin-top: 20px;
-  position: relative;
-  top: 5px;
-  left: 5px;
+  width: 45px;
+  height: 45px;
+  margin-left: 10px;
+  /* margin-top: 20px; */
+  /* position: relative; */
+  /* position: absolute; */
+  /* top: 5px; */
+  /* left: 5px; */
 }
 
-.selected {
+/* input[type=checkbox].after {
+  color: green;
+  width: 60px;
+} */
+.selected.listNoCrossOut {
   font-weight: bolder;
+  font-family: sans-serif;
+}
+
+.spanClass.listNoCrossOut, .spanClass.noCrossOut{
+  font-weight: normal;
+  color: #3b3a30;
+  /* margin: 20px; */
+  overflow-wrap: break-word;
+  display: block;
+  white-space: normal;
+  text-decoration: none;
   /* color: red; */
 }
 
-.spanClass {
+.selected.listCrossOut {
+  font-weight: bolder;
+  font-family: sans-serif;
+  text-decoration: line-through;
+}
+
+/* .spanClass, .listNoCrossOut{
   font-weight: normal;
   color: #3b3a30;
-}
-/* Cross out selected item once completed */
+  margin: 20px;
+  overflow-wrap: break-word;
+  display: block;
+  white-space: normal;
+  /* min-width: 250px;
+  max-width: 1200px; */
+/* }  */
+/* Cross out selected item once completed. listCrossOut changes the css layout size, need to correct this so it only crosses out the list item*/
 .crossOut, .listCrossOut {
   text-decoration: line-through;
 }
 .noCrossOut, .listNoCrossOut {
   text-decoration: none;
 }
+
 
 /* a:focus, a:active {
   color:red;

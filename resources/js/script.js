@@ -46,13 +46,19 @@ let listToDelete = localStorage.getItem(LOCAL_STORAGE_LIST_KEY)
 //==========================================//
 //===============FORM ENTRY=================//
 //==========================================//
+function scrollToList() {
+  // var elmnt = document.getElementById("todoForm");
+  var elmnt = document.querySelector(".container3");
+  elmnt.scrollIntoView({behavior: "smooth", block: "end"});
+}
 //eventlistener on first todo form where the value is entered into the form and added as a list item when the ENTER KEY is pressed. It calls the function formProcess which creates the list item.
 newListFormItem.addEventListener('keypress', e =>{
   if(e.key === "Enter") {
     e.preventDefault();
     formProcess();
+    scrollToList();
     //scroll to bottom of page when enter is pressed on list form
-    window.scrollTo(0,1000);
+    // window.scrollTo(0,1000);
   }
 }) 
 
@@ -60,8 +66,9 @@ newListFormItem.addEventListener('keypress', e =>{
 newListFormItem.addEventListener('submit', e =>{
   e.preventDefault();
   formProcess();
+  scrollToList();
   //scroll to bottom of page when button is clicked on list form
-  window.scrollTo(0,1000);
+  // window.scrollTo(0,1000);
 })
 
 //TODO: The form area where once a list item is typed and button is clicked or enter is pressed, the list value gets added to the createList function which holds the object and also pushed to Local Storage
@@ -305,6 +312,10 @@ function toggler(e){
   }
 }
  
+function scrollToTask() {
+  var elmnt = document.getElementById("taskContainer");
+  elmnt.scrollIntoView({behavior: "smooth", block: "end"});
+}
 //====================================================
 //=============Toggle-On/Off-Functions======================
 //====================================================
@@ -315,7 +326,8 @@ function toggleOn(selectedText) {
   displayDiv.style.display = 'block';
   taskCard(selectedText);
   //scroll to bottom of page when the list item is clicked on todo list and toggleOn and taskCard functions are called
-  window.scrollTo(0,1000);
+  // window.scrollTo(0,1000);
+  scrollToTask();
 }
 
 function toggleOff() {
@@ -426,7 +438,9 @@ function taskCard(selectedText){
     //==========================================//
     //===============FORM ENTRY=================//
     //==========================================//
+    
 
+   
     //create a const to get the element by ID, have to create it here so that the element is in existence when I call it
     const newTaskFormItem = document.getElementById('taskForm');
 
@@ -435,18 +449,22 @@ function taskCard(selectedText){
       if(ev5.key === "Enter") {
         ev5.preventDefault();
         taskFormProcess();
+        scrollToTask();
         //scroll to bottom of page when enter is pressed on task form
-        window.scrollTo(0,1000);
+        // window.scrollTo(0,1000);
       }
     })
+
+    
 
     //eventlistener on Task todo form where the value is entered into the form and added as a Task item when the BUTTON is clicked. It calls the function taskFormProcess which creates the task item.
     taskButton.addEventListener('click', ev5 => {
       ev5.preventDefault();
       taskFormProcess();
+      scrollToTask();
       // console.log(newTaskFormItem);
       //scroll to bottom of page when button is clicked on task form
-      window.scrollTo(0,1000);
+      // window.scrollTo(0,1000);
     });
 
     function taskFormProcess(){
@@ -510,11 +528,80 @@ function taskCard(selectedText){
       }
     }
 
-    //================Task Function==========================
+    //================Task Function Test==========================
+    //Due to list item remaining crossed off after a new task item was added had to create an extra review of checkboxes. Now the linethrough is removed from a completed list item if a new task is entered which has no checkbox checked.
     function reviewChecks(){
       var cont = document.getElementById('newTask').children;
       console.log(cont);
+
+      for (var i =0; i < lists.length; i++){
+        // if(lists[i].id === idInNewList){
+        if(lists[i].name === selectedText){
+          console.log(lists[i].name + " has been selected during renderTasks")
+          //text of list item
+          // console.log(lists[i].tasks);
+
+          //Loop through each task within the list items
+          for(let n = 0, t = lists[i].tasks.length; n < t; n++){
+            //lists all tasks entered
+            var tasksInLists = lists[i].tasks[n];
+            var arrayOfTasks = lists[i].tasks;
+            var listName = lists[i].name;
+            var listTask= lists[i].completedTasks;
+            var listId = lists[i].id;
+
+             // console.log(listName)
+             console.log(lists[i].tasks[n])
+
+             const engageListCrossOut = ()=> {
+              // console.log('function engageListCrossOut was tripped')
+              //Todo: find specific list item, these variables were declared earlier
+              listThings = newList.querySelectorAll('span')
+              //List item related to tasks that are all checked off has completedTasks set to true and saved in LS
+              for(let listSelection of lists){
+                // console.log(listSelection);
+                // console.log(listSelection.completedTasks);
+                // console.log(listSelection.id);
+                if(listSelection.id === listId){
+                  // console.log("yes trying to find only list item with this id and setting LS completedTasks to TRUE")
+                  //TODO:Sets the Local Storage to True
+                  listSelection.completedTasks = true;
+                  // console.log(listSelection);
+                } 
+              }
+            }
+            //TODO:(Note: Changes LS property t/f) Does the opposite of above sets LS list property completedTasks as false
+            const engageListNoCrossOut = ()=> {
+              // console.log('function engageListNoCrossOut was tripped')
+              for(let listSelection of lists){
+                if(listSelection.id === listId){
+                  listSelection.completedTasks = false;
+                  // console.log(listSelection);
+                }
+              }
+            }
+
+            //TODO: checks if every check box in every task item is checked and therefore the complete is set to true. The every() method returns true if all elements in an array pass a test, provided as an arrow function below, Cheching if taskInLi is all complete === true.
+            let taskCompleteChecker = arrayOfTasks.every(taskInLi =>
+              taskInLi.complete === true);
+
+            // console.log(taskCompleteChecker)
+            //TODO: If statement calls the functions that will store the outcome in LS, either true or false, which will in turn put a linethrough through the parent list item
+            if(taskCompleteChecker === false){
+              engageListNoCrossOut();
+              // console.log("hello it is false")
+            } else if(taskCompleteChecker === true){
+              engageListCrossOut();
+              // console.log("hello it is true")
+            }            
+
+            saveAndRender();
+          }
+        }
+      }
+
     }
+    //================Task Function Test End==============
 
 
     // console.log(idInNewList)
@@ -538,6 +625,7 @@ function taskCard(selectedText){
             var listId = lists[i].id;
 
             console.log(listTask)
+            listTask = false;
 
             // console.log(listName)
             console.log(lists[i].tasks[n])
@@ -621,7 +709,8 @@ function taskCard(selectedText){
             removeTaskBtn.addEventListener('click', ev5 => {
               // ev5.target.parentNode.remove();
               //give a variable name to the task id that will be deleted
-              deletedTaskId = ev5.target.parentNode.id;           
+              deletedTaskId = ev5.target.parentNode.id;
+              console.log(deletedTaskId);          
               //////for loop through each task array with the purpose of finding the id in the array    
               // let counter = 0;
               for(var t = 0; t < arrayOfTasks.length; t++){
@@ -634,13 +723,13 @@ function taskCard(selectedText){
                 //filter through each task array with function checkId to pull the idTask.id if it matches the evt.parent.id deletedTaskId then splice the task in the array from the object stored in LS
                 let taskToDelete = arrayOfTasks.filter(checkId)
                 function checkId(idTask){
-                  //console.log(idTask.id);
+                  console.log(idTask.id);
                   if(idTask.id === deletedTaskId){
                     // console.log(lists[i].name);
-                    console.log(arrayOfTasks[t].complete)
-                    arrayOfTasks[t].complete = false;
-                    console.log(arrayOfTasks[t].complete)
-                    console.log(lists)
+                    // console.log(arrayOfTasks[t].complete)
+                    // arrayOfTasks[t].complete = false;
+                    // console.log(arrayOfTasks[t].complete)
+                    // console.log(lists)
                     arrayOfTasks.splice([n],1)
                   }
                 }
@@ -762,9 +851,9 @@ function taskCard(selectedText){
                 // console.log("hello it is true")
               }            
 
-              reviewChecks();
               saveAndRender();
             })
+            reviewChecks();
             taskUl.appendChild(taskListElement);
             
           }

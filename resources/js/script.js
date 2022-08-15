@@ -32,43 +32,40 @@ let showDate = constantDate.innerHTML = newDateForm();
 //   tasks: []
 // }];
 
-//Local Storage list key variable given an unlikely key name
+//TODO: Local Storage list key variable given an unlikely key name. task.lists becomes the key stored in the Local Storage key value pair
 const LOCAL_STORAGE_LIST_KEY = 'task.lists';
-//Local Storage selected list id variable given an unlikely key name
+//TODO: Local Storage selected list id variable given an unlikely key name. task.selectedListId becomes the value stored in Local Storage in the key value pair
 const LOCAL_STORAGE_SELECTED_LIST_ID_KEY = 'task.selectedListId';
-//lists becomes a variable that sets up an array where the object will live OR gets that list from Local Storage and also turns the list into an object with parse
+//TODO: Lists becomes a variable that sets up an array where the object will live OR gets that list from Local Storage and also turns the list into an object with parse
 let lists = JSON.parse(localStorage.getItem(LOCAL_STORAGE_LIST_KEY)) || [];
-//variable that will represent the id from local storage
+//variable that will represent the id/value from local storage. It will get the value data from Local Storage
 let selectedListId = localStorage.getItem(LOCAL_STORAGE_SELECTED_LIST_ID_KEY);
-//variable that will get a list item from Local Storage
+//variable that will get a list item, key data from Local Storage for deletion
 let listToDelete = localStorage.getItem(LOCAL_STORAGE_LIST_KEY)
 
 //==========================================//
 //===============FORM ENTRY=================//
 //==========================================//
+//TODO: Function that is called to scroll to the end of the container block
 function scrollToList() {
   // var elmnt = document.getElementById("todoForm");
   var elmnt = document.querySelector(".container3");
   elmnt.scrollIntoView({behavior: "smooth", block: "end"});
 }
-//eventlistener on first todo form where the value is entered into the form and added as a list item when the ENTER KEY is pressed. It calls the function formProcess which creates the list item.
+//TODO: Eventlistener on first todo form where the value is entered into the form and added as a list item when the ENTER KEY is pressed. It calls the function formProcess which creates the list item.
 newListFormItem.addEventListener('keypress', e =>{
   if(e.key === "Enter") {
     e.preventDefault();
     formProcess();
     scrollToList();
-    //scroll to bottom of page when enter is pressed on list form
-    // window.scrollTo(0,1000);
   }
 }) 
 
-//eventlistener on first todo form where the value is entered into the form and added as a list item when the BUTTON is clicked. It calls the function formProcess which creates the list item.
+//TODO: Eventlistener on first todo form where the value is entered into the form and added as a list item when the BUTTON is clicked. It calls the function formProcess which creates the list item.
 newListFormItem.addEventListener('submit', e =>{
   e.preventDefault();
   formProcess();
   scrollToList();
-  //scroll to bottom of page when button is clicked on list form
-  // window.scrollTo(0,1000);
 })
 
 //TODO: The form area where once a list item is typed and button is clicked or enter is pressed, the list value gets added to the createList function which holds the object and also pushed to Local Storage
@@ -107,19 +104,19 @@ function saveAndRender(){
   renderLists();
 }
 
-//sets the key to the LOCAL STORAGE variable we named earlier and the object lists is stored to Local Storage as a string 
+//TODO: Sets the key to the LOCAL STORAGE variable we named earlier and the object lists is stored to Local Storage as a string 
 function save() {
   localStorage.setItem(LOCAL_STORAGE_LIST_KEY, JSON.stringify(lists))
 }
 
-//Will stop list from duplicating some list values entered on the <ul> unordered list with the ID name newlist, before we call a forEach function in renderLists()
+//TODO: Will stop list from duplicating some list values entered on the <ul> unordered list with the ID name newlist, before we call a forEach function in renderLists()
 function clearElement(newList) {
   while (newList.firstChild) {
     newList.removeChild(newList.firstChild)
   }
 }
 
-//=========Works and removes last object from lists array of objects - Saves to local storage as new Lists with out deleted list item ======//
+//TODO: Splices list item based on the target id of the list item that holds the delete button. Saves to local storage as new Lists with out deleted list item. //
 function deletedLi() {
   for (var i =0; i < lists.length; i++)
     if (lists[i].id === deletedListId) {
@@ -320,7 +317,7 @@ function scrollToTask() {
 //=============Toggle-On/Off-Functions======================
 //====================================================
 let displayDiv = document.getElementById('display');
-displayDiv.style.diplsy = 'none'
+displayDiv.style.display = 'none'
 //ToggleOn was called from toggler function and had list.name passed as a parameter as selectedText
 function toggleOn(selectedText) {
   displayDiv.style.display = 'block';

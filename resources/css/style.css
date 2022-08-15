@@ -14,6 +14,7 @@ HEX: #3b3a30 */
 html {
   overflow-x: hidden;
   width: 100%;
+  height: 100%;
   
 }
 
@@ -64,19 +65,38 @@ h1 {
 
 
 .mtnImg {
-  height: 20%;
-  width: 100%;
+  
+  max-width: 100%;
+  height: auto;
+  /* height: 10%; */ 
+  /* min-height: 50px; */
+
+  /* background-image: url("resources/img/mountains.jpg"); */
+  /* background-attachment: scroll;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover; */
+
 }
 
-.container1 {
- background-color: #b2c2bf;
+.container1{
+ /* background-color: #b2c2bf;
  flex-direction: column;
  align-content: center;
  justify-content: center;
  flex-wrap: wrap;
- padding: 0% 0% 2% 0%;
+ padding: 0% 0% 2% 0%; */
  /* margin: 20px; */
  /* height: 100px; */
+
+ /* background-image: url("resources/img/mountains.jpg"); */
+  /* background-attachment: scroll;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover; */
+
+ 
+ /* z-index: 3; */
 }
 .container2 h2 {
   font-size: 155%;
@@ -184,6 +204,7 @@ li {
   margin: .5%;
   /* inline-size: 150px; */
   /* overflow-wrap: break-word; */
+  cursor: pointer;
   
  
 }
@@ -215,8 +236,9 @@ textarea {
   /* width: 400px; */
   border-radius: 25px;
   font-size: 1.5rem;
-  height: 2.2rem;
+  height: 2.5rem;
   text-align: center;
+  padding-top: .7%;
   /* margin-bottom: -8px; */
 }
 
@@ -247,8 +269,8 @@ input[type=text] {
 }
 
 #removeList, .removeList, #editList, .editList, #listAddButton, #taskAddButton{
-  width: 45px;
-  height: 45px;
+  width: 42px;
+  height: 42px;
   /* color: #3b3a30; */
   margin-left: 10px; 
   /* position: relative; */
